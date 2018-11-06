@@ -2,7 +2,6 @@
 
 from odoo import models, fields, api
 
-
 class Wizard(models.TransientModel):
     _name = 'openacademy.wizard'
     _description = "Wizard: Quick Registration of Attendees to Sessions"

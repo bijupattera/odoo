@@ -1,4 +1,6 @@
-'name': "Open Academy",
+# -*- coding: utf-8 -*-
+{
+'name': "OpenAcademy1",
 
     'summary': """
         Manage Trainings""",
@@ -26,10 +28,10 @@
         # 'views/views.xml',
         'views/templates.xml',
 	    'views/openacademy.xml',
-
     ],
     # only loaded in demonstration mode
     'demo': [
         'demo/demo.xml',
     ],
-  'application': True,
+'application': True,
+}

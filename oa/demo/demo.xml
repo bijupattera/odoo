@@ -1,30 +1,14 @@
 <odoo>
-    <data>
-        <!--  -->
-        <!--   <record id="object0" model="oa.oa"> -->
-        <!--     <field name="name">Object 0</field> -->
-        <!--     <field name="value">0</field> -->
-        <!--   </record> -->
-        <!--  -->
-        <!--   <record id="object1" model="oa.oa"> -->
-        <!--     <field name="name">Object 1</field> -->
-        <!--     <field name="value">10</field> -->
-        <!--   </record> -->
-        <!--  -->
-        <!--   <record id="object2" model="oa.oa"> -->
-        <!--     <field name="name">Object 2</field> -->
-        <!--     <field name="value">20</field> -->
-        <!--   </record> -->
-        <!--  -->
-        <!--   <record id="object3" model="oa.oa"> -->
-        <!--     <field name="name">Object 3</field> -->
-        <!--     <field name="value">30</field> -->
-        <!--   </record> -->
-        <!--  -->
-        <!--   <record id="object4" model="oa.oa"> -->
-        <!--     <field name="name">Object 4</field> -->
-        <!--     <field name="value">40</field> -->
-        <!--   </record> -->
-        <!--  -->
-    </data>
+        <record model="oa.course" id="ccnars">
+            <field name="name">CCNA-RS</field>
+            <field name="description">CCNA Routing and Switching</field>
+        </record>
+        <record model="oa.course" id="ccnadc">
+            <field name="name">CCNA-DC</field>
+            <!-- no description for this one -->
+        </record>
+        <record model="oa.course" id="ccnasp">
+            <field name="name">CCNA-SP</field>
+            <field name="description">CCNA Service Provider</field>
+        </record>
 </odoo>

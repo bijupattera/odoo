@@ -50,9 +50,7 @@ class Session(models.Model):
     attendee_ids = fields.Many2many('res.partner', string="Attendees")
     taken_seats = fields.Float(string="Taken seats", compute='_taken_seats')
     occupied_seats = fields.Integer(string="Booked Seats", compute='_occupied_seats')
-
     end_date = fields.Date(string="End Date", store=True, compute='_get_end_date', inverse='_set_end_date')
-
     hours = fields.Float(string="Duration in hours", compute='_get_hours', inverse='_set_hours')
 
 

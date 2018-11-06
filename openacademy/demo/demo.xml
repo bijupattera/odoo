@@ -1,15 +1,14 @@
 <odoo>
-        <record model="openacademy.course" id="course0">
-            <field name="name">Course 0</field>
-            <field name="description">Course 0's description Can have multiple lines
-            </field>
+        <record model="openacademy.course" id="ccnars">
+            <field name="name">CCNA-RS</field>
+            <field name="description">CCNA Routing and Switching</field>
         </record>
-        <record model="openacademy.course" id="course1">
-            <field name="name">Course 1</field>
+        <record model="openacademy.course" id="ccnadc">
+            <field name="name">CCNA-DC</field>
             <!-- no description for this one -->
         </record>
-        <record model="openacademy.course" id="course2">
-            <field name="name">Course 2</field>
-            <field name="description">Course 2's description</field>
+        <record model="openacademy.course" id="ccnasp">
+            <field name="name">CCNA-SP</field>
+            <field name="description">CCNA Service Provider</field>
         </record>
 </odoo>
