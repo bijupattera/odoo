@@ -7,4 +7,4 @@ class Partner(models.Model):
     # Add a new column to the res.partner model, by default partners are not
     # instructors
     instructor = fields.Boolean("Instructor", default=False)
-    session_ids = fields.Many2many('oa.session', string="Conducted Sessions", readonly=True)
+    session_ids = fields.Many2many('oa.session', string="Attended Sessions", readonly=True)
