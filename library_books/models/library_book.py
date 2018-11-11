@@ -29,9 +29,26 @@ class LibraryBook(models.Model):
     date_release = fields.Date('Release Date')
     date_updated = fields.Datetime('Last Updated')
     pages = fields.Integer('Number of Pages')
-    reader_rating = fields.Float(
-        'Reader Average Rating',
-        (14, 4),  # Optional precision (total, decimals),
-    )
-    author_ids = fields.Many2many('res.partner', string='Authors')
 
+    author_ids = fields.Many2many('res.partner', string='Authors')
+    pages = fields.Integer(
+        string='Number of Pages',
+        default=0,
+        help='Total book page count',
+        groups='base.group_user',
+        states={'cancel': [('readonly', True)]},
+        copy=True,
+        index=False,
+        readonly=False,
+        required=False,
+        company_dependent=False,
+    )
+
+    def name_get(self):
+        result = []
+            for record in self:
+            result.append(
+            (record.id,
+                u"%s (%s)" % (record.name, record.date_released)
+    ))
+    return result
