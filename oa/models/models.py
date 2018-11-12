@@ -7,17 +7,33 @@ class Course(models.Model):
     _name = 'oa.course'
     _description = 'Open Academy Course Class'
 
-    name = fields.Char(string="Title", required=True)
+    name = fields.Char(
+        string="Title",
+        required=True
+    )
+
     description = fields.Text()
-    responsible_id = fields.Many2one('res.users', ondelete='set null', string="Responsible", index=True)
-    session_ids = fields.One2many('oa.session', 'course_id', string="Sessions")
+
+    responsible_id = fields.Many2one(
+        'res.users',
+        ondelete='set null',
+        string="Responsible",
+        index=True
+    )
+
+    session_ids = fields.One2many(
+        'oa.session',
+        'course_id',
+        string="Sessions"
+    )
 
     @api.multi
     def copy(self, default=None):
         default = dict(default or {})
 
         copied_count = self.search_count(
-            [('name', '=like', u"Copy of {}%".format(self.name))])
+            [('name', '=like', u"Copy of {}%".format(self.name))]
+        )
         if not copied_count:
             new_name = u"Copy of {}".format(self.name)
         else:
@@ -40,17 +56,65 @@ class Session(models.Model):
     _name = 'oa.session'
     _description = 'Open Academy Sesions'
 
-    name = fields.Char(required=True)
-    start_date = fields.Date(default=fields.Date.today)
-    duration = fields.Float(digits=(5, 2), help="Number of days")
-    seats = fields.Integer(string="Seats")
-    active = fields.Boolean(default=True)
-    instructor_id = fields.Many2one('res.partner', string="Instructor", domain=['|', ('instructor', '=', True),
-                                     ('category_id.name', 'ilike', "Teacher")])
-    course_id = fields.Many2one('oa.course', ondelete='cascade', string="Course", required=True)
-    attendee_ids = fields.Many2many('res.partner', string="Attendees")
-    taken_seats = fields.Float(string="Admissions", compute='_taken_seats')
-    end_date = fields.Date(string="End Date", store=True, compute='_get_end_date', inverse='_set_end_date')
+    name = fields.Char(
+        required=True
+    )
+
+    start_date = fields.Date(
+        default=fields.Date.today
+    )
+
+    duration = fields.Float(
+        digits=(5, 2),
+        help="Number of days"
+    )
+
+    seats = fields.Integer(
+        string="Seats"
+    )
+
+    active = fields.Boolean(
+        default=True
+    )
+
+    color = fields.Integer()
+
+    instructor_id = fields.Many2one(
+        'res.partner',
+        string="Instructor",
+        domain=['|', ('instructor', '=', True), ('category_id.name', 'ilike', "Teacher")]
+    )
+
+    course_id = fields.Many2one(
+        'oa.course',
+        ondelete='cascade',
+        string="Course",
+        required=True
+    )
+
+    attendee_ids = fields.Many2many(
+        'res.partner',
+        string="Attendees"
+    )
+
+    taken_seats = fields.Float(
+        string="Admissions",
+        compute='_taken_seats'
+    )
+
+    end_date = fields.Date(
+        string="End Date",
+        store=True,
+        compute='_get_end_date',
+        inverse='_set_end_date'
+    )
+
+    attendees_count = fields.Integer(
+        string="Attendees count",
+        compute='_get_attendees_count',
+        store=True
+    )
+
 
     @api.depends('seats', 'attendee_ids')
     def _taken_seats(self):
@@ -102,6 +166,11 @@ class Session(models.Model):
             start_date = fields.Datetime.from_string(r.start_date)
             end_date = fields.Datetime.from_string(r.end_date)
             r.duration = (end_date - start_date).days + 1
+
+    @api.depends('attendee_ids')
+    def _get_attendees_count(self):
+        for r in self:
+            r.attendees_count = len(r.attendee_ids)
 
 
     @api.constrains('instructor_id', 'attendee_ids')
