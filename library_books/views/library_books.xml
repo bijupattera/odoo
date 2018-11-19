@@ -4,17 +4,23 @@
         <field name="name">Library Book Form</field>
         <field name="model">library.book</field>
         <field name="arch" type="xml">
-    <form>
-        <group>
+    <form sring="LibraryBook Form">
+        <sheet>
         <group>
             <field name="name"/>
             <field name="author_ids" widget="many2many_tags"/>
+            <field name="active"/>
+            <field name="state"/>
         </group>
         <group>
             <field name="date_release"/>
+            <field name="pages"/>
+            <field name="retail_price"/>
+            <field name="currency_id"/>
+            <field name="publisher_id"/>
             <field name="description"/>
         </group>
-        </group>
+        </sheet>
     </form>
         </field>
     </record>
@@ -26,7 +32,11 @@
             <tree>
                 <field name="name"/>
                 <field name="date_release"/>
+                <field name="state"/>
+                <field name="retail_price"/>
+                <field name="currency_id" invisible="True"/>
                 <field name="pages"/>
+                <field name="publisher_id"/>
             </tree>
         </field>
     </record>
@@ -43,8 +53,8 @@
             </search>
         </field>
     </record>
-
-        <act_window
+    <!--
+         <act_window
             id="library_book_action"
             name="Library Books"
             res_model="library.book" />
@@ -54,6 +64,40 @@
             name="Library"
             action="library_book_action"
             parent=""
-            sequence="5" />
+            sequence="5" /> """
+     -->
+              <!-- window action -->
+        <!--
+            The following tag is an action definition for a "window action",
+            that is an action opening a view or a set of views
+        -->
+        <record model="ir.actions.act_window" id="book_list_action">
+            <field name="name">Library</field>
+            <field name="res_model">library.book</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">Create the First Book
+                </p>
+            </field>
+        </record>
+        <!-- top level menu: no parent -->
+        <menuitem id="main_LibraryBook_menu" name="Library"/>
+        <!-- A first level in the left side menu is needed
+             before using action= attribute -->
+        <menuitem id="LibraryBook_menu" name="Library"
+                  parent="main_LibraryBook_menu"/>
+        <!-- the following menuitem should appear *after*
+             its parent openacademy_menu and *after* its
+             action course_list_action -->
+        <menuitem id="library_menu" name="Library" parent="LibraryBook_menu"
+                  action="book_list_action"/>
+        <!-- Full id location:
+             action="oa.course_list_action"
+             It is not required when it is the same module -->
+        <!-- session form view -->
+
+
+
 </odoo>
 

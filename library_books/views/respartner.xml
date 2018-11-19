@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <odoo>
+
+        <!-- Add Author field to existing view -->
+        <record model="ir.ui.view" id="partner_Books_form_view">
+            <field name="name">partner.books</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <notebook position="inside">
+                    <page string="Authored Books">
+                        <group>
+                            <field name="auth_book_ids"/>
+                        </group>
+                    </page>
+                    <page string="Published Books">
+                        <group>
+                            <field name="pub_book_ids"/>
+                        </group>
+                    </page>
+                </notebook>
+            </field>
+        </record>
+
+    <record model="ir.actions.act_window" id="author_list_action">
+            <field name="name">Author</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="configuration_menu" name="Configuration"
+                  parent="main_LibraryBook_menu"/>
+        <menuitem id="author_menu" name="Authors"
+                  parent="configuration_menu"
+                  action="author_list_action"/>
+
+</odoo>
