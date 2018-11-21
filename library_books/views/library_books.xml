@@ -5,6 +5,15 @@
         <field name="model">library.book</field>
         <field name="arch" type="xml">
     <form sring="LibraryBook Form">
+        <header>
+            <button string="Make Available" type="object" name="action_avail"
+                states="draft" class="oe_highlight" />
+            <button string="Mark as lost" type="object" name="action_lost"
+                states="available" class="oe_highlight"/>
+            <button string="Reset to Available" type="object" name="action_got"
+                states="lost" />
+        <field name="state" widget="statusbar"/>
+        </header>
         <sheet>
         <group>
             <field name="name"/>

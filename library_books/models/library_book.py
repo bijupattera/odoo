@@ -37,7 +37,9 @@ class LibraryBook(models.Model):
         [('draft', 'Not Available'),
          ('available', 'Available'),
          ('lost', 'Lost')],
-        'State')
+        'State',
+        default='draft',
+    )
     description = fields.Html(
         string='Description',
         # optional:
