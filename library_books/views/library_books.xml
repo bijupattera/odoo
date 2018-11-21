@@ -16,19 +16,25 @@
         </header>
         <sheet>
         <group>
-            <field name="name"/>
-            <field name="author_ids" widget="many2many_tags"/>
-            <field name="active"/>
-            <field name="state"/>
+            <group>
+                <field name="name"/>
+                <field name="author_ids" widget="many2many_tags"/>
+                <field name="active"/>
+                <field name="state"/>
+            </group>
+            <group>
+                <field name="date_release"/>
+                <field name="pages"/>
+                <field name="retail_price"/>
+                <field name="currency_id"/>
+                <field name="publisher_id"/>
+            </group>
         </group>
-        <group>
-            <field name="date_release"/>
-            <field name="pages"/>
-            <field name="retail_price"/>
-            <field name="currency_id"/>
-            <field name="publisher_id"/>
-            <field name="description"/>
-        </group>
+            <notebook>
+                <page string="Description">
+                    <field name="description"/>
+                </page>
+            </notebook>
         </sheet>
     </form>
         </field>
