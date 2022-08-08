@@ -1,0 +1,13 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_homedaily_user,Home Daily User Access,model_home_daily,homedaily_group_user,1,0,0,0
+access_homedaily_manager,Home Daily Manager Access,model_home_daily,homedaily_group_manager,1,1,1,1
+access_sipinvest_user,Home Daily User Access,model_sip_invest,homedaily_group_user,1,0,0,0
+access_sipinvest_manager,Home Daily Manager Access,model_sip_invest,homedaily_group_manager,1,1,1,1
+access_fdinvest_user,Home Daily User Access,model_fd_invest,homedaily_group_user,1,0,0,0
+access_fdinvest_manager,Home Daily Manager Access,model_fd_invest,homedaily_group_manager,1,1,1,1
+access_income_user,Income User Access,model_varu_manam,homedaily_group_user,1,0,0,0
+access_income_manager,Income Manager Access,model_varu_manam,homedaily_group_manager,1,1,1,1
+access_cash_user,Income User Access,model_cash_inhand,homedaily_group_user,1,0,0,0
+access_cash_manager,Income Manager Access,model_cash_inhand,homedaily_group_manager,1,1,1,1
+access_totals_user,Income User Access,model_expense_totals,homedaily_group_user,1,0,0,0
+access_totals_manager,Income Manager Access,model_expense_totals,homedaily_group_manager,1,1,1,1

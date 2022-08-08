@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<odoo>
+
+  <record id="view_dboard_expence" model="ir.ui.view">
+    <field name="name">Expense Dboard Form</field>
+    <field name="model">board.board</field>
+    <field name="arch" type="xml">
+    <form string="Expense Dashboard">
+		<board style="1-2">
+			<column>
+				<action
+					string="Expense"
+					name="%(expense_app.action_total)d"/>
+				<action
+					context="{'graph_measure': 'amount', 'graph_mode': 'pie', 'graph_groupbys': ['date:month']}"
+					name="%(expense_app.action_graph_expense)d"/>
+				<action
+					context="{'group_by': [], 'graph_measure': 'value', 'graph_mode': 'pie', 'graph_groupbys': ['name']}"
+					string="Assets"
+					name="%(expense_app.action_graph_assets)d"/>
+			</column>
+			<column>
+				<action
+					string="Income"				
+					context="{'orderedBy': [], 'dashboard_merge_domains_contexts': False}" 
+					domain="[]" 
+					modifiers="{}" 
+					name="%(expense_app.action_tree_income)d"/>
+				<action
+					context="{}"
+					string="Mutual Funds"
+					name="%(expense_app.action_tree_sip)d"/>
+			</column>
+		</board>       
+    </form>
+    </field>
+  </record>
+  
+</odoo>

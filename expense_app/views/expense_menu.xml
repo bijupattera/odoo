@@ -1,0 +1,149 @@
+<?xml version="1.0"?>
+<odoo>
+
+    <record id="action_expense" model="ir.actions.act_window">
+        <field name="name">Expense</field>
+        <field name="res_model">home.daily</field>
+        <field name="view_mode">tree,form,graph</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Add a new Expense
+            </p>
+            <p>
+                Income is the money that people and businesses receive in exchange
+                for working, producing a product or service, or investing capital.
+            </p>
+        </field>
+    </record>
+
+    <record id="action_income" model="ir.actions.act_window">
+        <field name="name">Income</field>
+        <field name="res_model">varu.manam</field>
+        <field name="view_mode">tree,form,graph</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Add a new Income
+            </p>
+            <p>
+                The amount of money or its equivalent received during a period
+                of time in exchange for labor or services, from the sale of goods
+                or property, or as profit from financial investments.
+            </p>
+        </field>
+    </record>
+    <record id="action_sip" model="ir.actions.act_window">
+        <field name="name">SIP</field>
+        <field name="res_model">sip.invest</field>
+        <field name="view_mode">tree,form,graph</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Add a new SIP
+            </p>
+            <p>
+                A Systamatic Investment Plan is an recurring investment in share market
+            </p>
+        </field>
+    </record>
+
+    <record id="action_fd" model="ir.actions.act_window">
+        <field name="name">Assets</field>
+        <field name="res_model">fd.invest</field>
+        <field name="view_mode">tree,form,kanban,graph</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Add an asset
+            </p>
+            <p>
+                An asset is a resource with economic value that an individual,
+                corporation or country owns or controls with the expectation
+                that it will provide future benefit.
+            </p>
+        </field>
+    </record>
+
+    <record id="action_cash" model="ir.actions.act_window">
+
+        <field name="res_model">cash.inhand</field>
+        <field name="view_mode">tree,form,graph</field>
+        <field name="context">{'search_default_groupby_date_year':1, 'search_default_groupby_date_month':1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Add an cash transation
+            </p>
+            <p>
+                An incoming or outgoing flow of cash
+            </p>
+        </field>
+
+    </record>
+
+    <record id="action_total" model="ir.actions.act_window">
+        <field name="name">Totals</field>
+        <field name="res_model">expense.totals</field>
+        <field name="view_mode">tree</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Read Only Totals
+            </p>
+            <p>
+                Totals of all accoutns
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="expense_menu_root"
+              name="Expense"
+              sequence="-1"
+    />
+
+    <menuitem id="menu_dboard"
+              name="Dashboard"
+              action="board.open_board_my_dash_action"
+              parent="expense_menu_root"
+              sequence="1"
+    />
+
+    <menuitem id="menu_expense"
+              name="Expense"
+              action="action_expense"
+              parent="expense_menu_root"
+              sequence="15"
+    />
+
+    <menuitem id="menu_income"
+              name="Income"
+              action="action_income"
+              parent="expense_menu_root"
+              sequence="25"
+
+    />
+
+    <menuitem id="menu_fd"
+              name="Assets"
+              action="action_fd"
+              parent="expense_menu_root"
+              sequence="35"
+    />
+
+    <menuitem id="menu_sip"
+              name="Mutual Funds"
+              action="action_sip"
+              parent="expense_menu_root"
+              sequence="45"
+    />
+
+    <menuitem id="cashinhand"
+              name="Cash A/C"
+              action="action_cash"
+              parent="expense_menu_root"
+              sequence="55"
+    />
+
+    <!--menuitem id="expensetotals"
+              name="Total"
+              action="action_total"
+              parent="expense_menu" 
+    /-->
+
+
+</odoo>

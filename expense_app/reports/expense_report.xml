@@ -1,0 +1,85 @@
+<?xml version="1.0"?> 
+<odoo> 
+<record id="paperformat_euro_landscape"
+        model="report.paperformat">
+  <field name="name">European A4 Landscape</field>
+  <field name="default" eval="True" />
+  <field name="format">A4</field>
+  <field name="page_height">0</field>
+  <field name="page_width">0</field>
+  <field name="orientation">Landscape</field>
+  <field name="margin_top">40</field>
+  <field name="margin_bottom">23</field>
+  <field name="margin_left">7</field>
+  <field name="margin_right">7</field>
+  <field name="header_line" eval="False" />
+  <field name="header_spacing">35</field>
+  <field name="dpi">90</field>
+</record>
+
+<report id="action_library_book_report"
+	string="Home Daily"
+	model="home.daily" report_type="qweb-html"
+	name="expense_app.report_home_daily_template" 
+	paperformat="paperformat_euro_landscape"
+	/> 
+	<template id="report_home_daily_template">
+		<t t-call="web.html_container">
+			<t t-call="web.external_layout">
+				<div class="page">
+					<!-- Report header content -->
+					<div class="container">
+						<div class="row bg-primary">
+						<div class="col-2">Date</div>
+						<div class="col-3">Item</div>
+						<div class="col-2">Category</div>
+						<div class="col-1">Quantity</div>
+						<div class="col-2">Price</div>
+						<div class="col-2">Total</div>
+					</div>
+					
+					<t t-foreach="docs" t-as="o">
+						<div class="row">
+						<!-- Report Row Content -->
+							<div class="col-2">
+								<span t-field="o.date" t-options="{'widget': 'date'}" />
+							</div>
+							<div class="col-3">
+								<span t-field="o.name" />
+							</div>
+							<div class="col-2">
+								<span t-field="o.category" />
+							</div>
+							<div class="col-1">
+							<div t-field="o.quantity" />
+							</div>
+							<div class="col-2">
+							<div t-field="o.amount" />
+							</div>
+							<div class="col-2">
+							<div t-field="o.total" />
+							</div>
+						</div>				
+					</t>
+					
+					<div class="row">
+						<div class="col-2" />
+						<div class="col-2" />
+						<div class="col-3" />
+						<div class="col-2" >
+							Count: <t t-esc="len(docs)" />
+						</div>
+						<div class="col-1" >
+							<h5>Total: </h5>
+						</div>
+						<div class="col-1" >
+							<h5><t t-esc="sum([x.amount for x in docs])" /></h5>
+						</div>
+					</div>
+								
+			</div>
+			</div>
+		 </t>
+		</t>
+	</template>
+</odoo>

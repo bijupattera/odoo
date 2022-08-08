@@ -1,0 +1,84 @@
+<?xml version="1.0"?>
+<odoo>
+
+    <record id="view_income" model="ir.ui.view">
+        <field name="name">Income Form</field>
+        <field name="model">varu.manam</field>
+        <field name="arch" type="xml">
+            <form string="Expense">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="date"/>
+                            <field name="shop_ids" widget="many2many_tags"/>
+                            <field name="category"/>
+                            <field name="quantity"/>
+                            <field name="amount"/>
+                        </group>
+                        <group>
+                            <field name="total"/>
+                            <field name="notes"/>
+                            <field name="descr"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_tree_income" model="ir.ui.view">
+        <field name="name">Income List</field>
+        <field name="model">varu.manam</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="date"/>
+                <field name="name"/>
+                <field name="shop_ids" widget="many2many_tags" optional="hide"/>
+                <field name="category"/>
+                <field name="currency_id" groups="base.group_multi_currency"/>
+                <field name="quantity"/>
+                <field name="amount"/>
+                <field name="total" sum="Grand Total"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_graph_income" model="ir.ui.view">
+        <field name="model">varu.manam</field>
+        <field name="arch" type="xml">
+            <graph type="bar">
+                <!--  Fields used for the display text  -->
+                <field name="name"/>
+                <field name="amount" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="view_search_income" model="ir.ui.view">
+        <field name="name">Income Filters</field>
+        <field name="model">varu.manam</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="category"/>
+                <filter name="filter_support"
+                        string="From Support"
+                        domain="[('category','=','support')]"/>
+                <filter name="filter_arikanut"
+                        string="From Arikanut"
+                        domain="[('category','=','aricanut')]"/>
+                <filter name="filter_arikanut"
+                        string="From Coconut"
+                        domain="[('category','=','coconut')]"/>
+                <filter name="filter_property"
+                        string="From RealEstate"
+                        domain="[('category','=','property')]"/>
+                <filter name="filter_inerest"
+                        string="From Interest"
+                        domain="[('category','=','interest')]"/>
+                <filter string="By Date" name="groupby_date" context="{'group_by':'date'}"/>
+            </search>
+        </field>
+    </record>
+
+</odoo>

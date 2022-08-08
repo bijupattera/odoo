@@ -1,0 +1,73 @@
+<?xml version="1.0" ?>
+<odoo>
+  <record id="module_homedaily_category" model="ir.module.category">
+    <field name="name">HomeExpense</field>
+  </record>
+
+  <!-- HomeDialy User Group -->
+  <record id="homedaily_group_user" model="res.groups">
+    <field name="name">User</field>
+    <field name="category_id"
+           ref="module_homedaily_category"/>
+    <field name="implied_ids"
+           eval="[(4, ref('base.group_user'))]"/>
+  </record>
+
+  <!-- HomeDialy Group -->
+  <record id="homedaily_group_manager" model="res.groups">
+    <field name="name">Manager</field>
+    <field name="category_id"
+           ref="module_homedaily_category"/>
+    <field name="implied_ids"
+           eval="[(4, ref('homedaily_group_user'))]"/>
+    <field name="users"
+           eval="[(4, ref('base.user_root')),
+                  (4, ref('base.user_admin'))]"/>
+  </record>
+
+
+  <data noupdate="1">
+    <record id="homedaily_user_rule" model="ir.rule">
+      <field name="name">Home Dialy User Access</field>
+      <field name="model_id" ref="model_home_daily"/>
+      <field name="domain_force">
+          [('active','=',True)]
+      </field>
+      <field name="groups" eval="[(4,ref('homedaily_group_user'))]"/>
+    </record>
+  </data>
+  
+  <data noupdate="1">
+    <record id="income_user_rule" model="ir.rule">
+      <field name="name">Income User Access</field>
+      <field name="model_id" ref="model_varu_manam"/>
+      <field name="domain_force">
+          [('active','=',True)]
+      </field>
+      <field name="groups" eval="[(4,ref('homedaily_group_user'))]"/>
+    </record>
+  </data>
+  
+  <data noupdate="1">
+    <record id="sipinvest_user_rule" model="ir.rule">
+      <field name="name">Sip Invest User Access</field>
+      <field name="model_id" ref="model_sip_invest"/>
+      <field name="domain_force">
+          [('active','=',True)]
+      </field>
+      <field name="groups" eval="[(4,ref('homedaily_group_user'))]"/>
+    </record>
+  </data>
+     
+  <data noupdate="1">
+    <record id="fdinvest_user_rule" model="ir.rule">
+      <field name="name">Sip Invest User Access</field>
+      <field name="model_id" ref="model_fd_invest"/>
+      <field name="domain_force">
+          [('active','=',True)]
+      </field>
+      <field name="groups" eval="[(4,ref('homedaily_group_user'))]"/>
+    </record>
+  </data>
+
+</odoo>

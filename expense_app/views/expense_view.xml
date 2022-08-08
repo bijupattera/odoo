@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<odoo>
+
+    <record id="view_form_expense" model="ir.ui.view">
+        <field name="name">Expense Form</field>
+        <field name="model">home.daily</field>
+        <field name="arch" type="xml">
+            <form string="Expense">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="date"/>
+                            <field name="shop_ids"/>
+                            <field name="category"/>
+                            <field name="quantity"/>
+                            <field name="amount"/>
+                        </group>
+                        <group>
+                            <field name="post_to_cashinhand"/>
+                            <field name="total"/>
+                            <field name="notes"/>
+                            <field name="descr"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_tree_expense" model="ir.ui.view">
+        <field name="name">Expense List</field>
+        <field name="model">home.daily</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="date"/>
+                <field name="name"/>
+                <field name="shop_ids" optional="hide"/>
+                <field name="category"/>
+                <field name="currency_id" groups="base.group_multi_currency"/>
+                <field name="quantity"/>
+                <field name="amount"/>
+                <field name="total" sum="Total Rs: "/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_search_expense" model="ir.ui.view">
+        <field name="name">home.daily.search</field>
+        <field name="model">home.daily</field>
+        <field name="arch" type="xml">
+            <search string="Expense">
+                <filter string="Daily Needs" name="filter_daily_needs" domain="[('category', '=', 'dailyneeds')]"/>
+                <filter string="School" name="filter_school" domain="[('category', '=', 'school')]"/>
+                <group expand="1" string="Group By">
+                    <filter string="Date" name="groupby_date_year" context="{'group_by':'date:year'}"/>
+                    <filter string="Date" name="groupby_date_month" context="{'group_by':'date:month'}"/>
+                </group>
+                <searchpanel>
+                    <field name="category" string="Category" enable_counters="1" context="{'group_by':'date:year'}"/>
+                </searchpanel>
+            </search>
+        </field>
+    </record>
+
+</odoo>
+

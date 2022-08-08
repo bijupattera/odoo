@@ -1,0 +1,96 @@
+<?xml version="1.0"?>
+<odoo>
+
+    <record id="view_fd" model="ir.ui.view">
+        <field name="name">FD Form</field>
+        <field name="model">fd.invest</field>
+        <field name="arch" type="xml">
+            <form string="SIP">
+                <header>
+                    <field name="state" invisible="True"/>
+                    <!--Close Button -->
+                    <button name="button_close"
+                            type="object"
+                            string="Close"
+                            confirm="Are you sure! want to close this investment?"
+                            attrs="{'invisible': [('state', 'in', ['clossed'])]}"
+                            class="oe_highlight"/>
+                    <!--Gain or Loss  Status -->
+                    <field name="stage_id"
+                           widget="statusbar"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="category"/>
+                            <field name="date"/>
+                            <field name="invested"/>
+                            <field name="bank" widget="many2many_tags"/>
+                            <field name="quantity"/>
+                            <field name="date_clossed"/>
+                        </group>
+                        <group>
+                            <field name="total"/>
+                            <field name="value"/>
+                            <field name="gain"/>
+                            <field name="state"/>
+                            <field name="notes"/>
+                            <field name="descr"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_tree_fd" model="ir.ui.view">
+        <field name="name">Deposite List</field>
+        <field name="model">fd.invest</field>
+        <field name="arch" type="xml">
+            <tree decoration-success="stage_id in ['gain']" decoration-warning="stage_id in ['new']"
+                  decoration-info="stage_id in ['clossed']" decoration-danger="stage_id =='loss'" sample="1">
+                <field name="date"/>
+                <field name="name"/>
+                <field name="category"/>
+                <field name="currency_id" groups="base.group_multi_currency"/>
+                <field name="invested"/>
+                <field name="bank" widget="many2many_tags" optional="hide"/>
+                <field name="quantity"/>
+                <field name="total" sum="Total Investment"/>
+                <field name="value" sum="Grand Total"/>
+                <field name="gain" sum="Gain Total"/>
+                <field name="stage_id" invisible="True"/>
+                <field name="active" invisible="True"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_graph_fd" model="ir.ui.view">
+        <field name="model">fd.invest</field>
+        <field name="arch" type="xml">
+            <graph type="bar">
+                <!--  Fields used for the display text  -->
+                <field name="name"/>
+                <field name="value" type="measure"/>
+            </graph>
+        </field>
+    </record>
+        <record id="view_search_assets" model="ir.ui.view">
+        <field name="name">fd.invest.serach</field>
+        <field name="model">fd.invest</field>
+        <field name="arch" type="xml">
+            <search string="Assets">
+                <filter string="SIP" name="filter_assets_sip" domain="[('category', '=', 'sip')]"/>
+                <filter string="Saving Deposit" name="filter_assets_saving" domain="[('category', '=', 'sd')]"/>
+                <group expand="1" string="Group By">
+                    <filter string="Date" name="groupby_date_year" context="{'group_by':'date:year'}"/>
+                    <filter string="Date" name="groupby_date_month" context="{'group_by':'date:month'}"/>
+                </group>
+                <searchpanel>
+                    <field name="category" string="Category" enable_counters="1" context="{'group_by':'date:year'}"/>
+                </searchpanel>
+            </search>
+        </field>
+    </record>
+
+</odoo>

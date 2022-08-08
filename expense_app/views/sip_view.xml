@@ -1,0 +1,79 @@
+<?xml version="1.0"?>
+<odoo>
+
+    <record id="view_form_sip" model="ir.ui.view">
+        <field name="name">SIP Form</field>
+        <field name="model">sip.invest</field>
+        <field name="arch" type="xml">
+            <form string="SIP">
+                <header>
+                    <field name="state" invisible="True"/>
+                    <!--Close Button -->
+                    <button name="button_close"
+                            type="object"
+                            string="Close SIP"
+                            attrs="{'invisible': [('state', 'in', ['clossed'])]}"
+                            class="oe_highlight"/>
+                    <!--Gain or Loss  Status -->
+                    <field name="stage_id"
+                           widget="statusbar" clickable="True"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="date"/>
+                            <field name="broker_ids" widget="many2many_tags" optional="hide"/>
+                            <field name="invested"/>
+                            <field name="quantity"/>
+                            <field name="amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            <field name="currency_id"/>
+                        </group>
+                        <group>
+                            <field name="total"/>
+                            <field name="gain"/>
+                            <field name="category"/>
+                            <field name="state"/>
+                            <field name="notes"/>
+                            <field name="descr"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_tree_sip" model="ir.ui.view">
+        <field name="name">SIP List</field>
+        <field name="model">sip.invest</field>
+        <field name="arch" type="xml">
+            <tree decoration-success="stage_id in ['gain']" decoration-warning="stage_id in ['new']"
+                  decoration-info="stage_id in ['clossed']" decoration-danger="stage_id =='loss'">
+                <field name="date"/>
+                <field name="name"/>
+                <field name="broker_ids" widget="many2many_tags" optional="hide"/>
+                <field name="category"/>
+                <field name="currency_id" groups="base.group_multi_currency"/>
+                <field name="quantity"/>
+                <field name="invested"/>
+                <field name="stage_id" invisible="True"/>
+                <field name="amount"/>
+                <field name="total"/>
+                <field name="gain"/>
+                <field name="gain_percent"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_graph_sip" model="ir.ui.view">
+        <field name="model">sip.invest</field>
+        <field name="arch" type="xml">
+            <graph type="bar">
+                <!--  Fields used for the display text  -->
+                <field name="name"/>
+                <field name="total" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+</odoo>

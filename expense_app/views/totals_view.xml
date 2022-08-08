@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<odoo>
+
+    <record id="view_totals" model="ir.ui.view">
+        <field name="name">Totals Form</field>
+        <field name="model">expense.totals</field>
+        <field name="arch" type="xml">
+            <form string="Totals">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="asset_total" />
+                            <field name="expense_total" />
+                            <field name="income_total"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="view_tree_totals" model="ir.ui.view">
+        <field name="name">Toals List</field>
+        <field name="model">expense.totals</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="asset_total"/>
+                <field name="expense_total"/>
+                <field name="income_total"/>
+            </tree>
+        </field>
+    </record>
+
+</odoo>
