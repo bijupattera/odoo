@@ -3,6 +3,7 @@ from odoo import api, fields, models
 
 class homedaily(models.Model):
     _name = 'home.daily'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = 'Expense'
     _order = 'date desc'
 
@@ -74,4 +75,5 @@ class homedaily(models.Model):
                 'name': values['name'],
                 'notes': "Auto Updated By Model Expanse Create",
             })
+            values['post_to_cashinhand'] = False
         return super(homedaily, self).create(values)

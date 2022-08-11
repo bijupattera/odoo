@@ -139,11 +139,18 @@
               sequence="55"
     />
 
+    <menuitem id="expense_configuration"
+              name="Configuration"
+              parent="expense_menu_root"
+              sequence="65"
+    />
+
     <!--menuitem id="expensetotals"
               name="Total"
               action="action_total"
               parent="expense_menu" 
     /-->
+
 
 
 </odoo>

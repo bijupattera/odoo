@@ -15,6 +15,7 @@
      'views/cash_view.xml',
      'views/fd_kanban_view.xml',
      'views/totals_view.xml',
+     'views/res_config_settings_views.xml',
      #     'reports/expense_report.xml',
  ],
  'application': True,

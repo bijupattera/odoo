@@ -13,12 +13,21 @@ class ExpenseTotals(models.Model):
     def init(self):
         tools.drop_view_if_exists(self.env.cr, self._table)
         self.env.cr.execute("""
-            CREATE OR REPLACE VIEW expense_totals AS
-            (
-            SELECT * from (
-            SELECT round(sum(value), 2)AS asset_total, min(id) as id FROM fd_invest WHERE active = 't') t1,(
-            SELECT round(sum(total), 2)AS expense_total FROM home_daily WHERE date_part('year', date) = date_part('year', CURRENT_DATE)) t2, (
-            SELECT round(sum(total), 2)AS income_total FROM varu_manam WHERE date_part('year', date) = date_part('year', CURRENT_DATE)) t3
-            );
-            """)
+             CREATE OR REPLACE VIEW expense_totals AS
+             (
+             SELECT * from (
+             SELECT sum(value) AS asset_total, min(id) as id FROM fd_invest WHERE active = 't') t1,(
+             SELECT sum(total) AS expense_total FROM home_daily WHERE date_part('year', date) = date_part('year', CURRENT_DATE)) t2, (
+             SELECT sum(total) AS income_total FROM varu_manam WHERE date_part('year', date) = date_part('year', CURRENT_DATE)) t3
+             );
+             """)
+        # self.env.cr.execute("""
+        #     CREATE OR REPLACE VIEW expense_totals AS
+        #     (
+        #     SELECT * from (
+        #     SELECT round(sum(value), 2)AS asset_total, min(id) as id FROM fd_invest WHERE active = 't') t1,(
+        #     SELECT round(sum(total), 2)AS expense_total FROM home_daily WHERE date_part('year', date) = date_part('year', CURRENT_DATE)) t2, (
+        #     SELECT round(sum(total), 2)AS income_total FROM varu_manam WHERE date_part('year', date) = date_part('year', CURRENT_DATE)) t3
+        #     );
+        #     """)
         

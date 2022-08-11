@@ -4,6 +4,7 @@ from odoo.exceptions import UserError
 
 class sip(models.Model):
     _name = 'sip.invest'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = 'Sip Investment Tracker'
     _order = 'date desc'
 
@@ -15,23 +16,24 @@ class sip(models.Model):
         readonly=False,
         required=True,
         translate=False,
+        tracking=True,
     )
 
     notes = fields.Text('Notes')
     descr = fields.Text('Description')
     
-    invested = fields.Monetary('Amount Invested ₹')
+    invested = fields.Float('Amount Invested ₹', tracking=True,)
     
     currency_id = fields.Many2one(
         'res.currency', 'Currency',
         default=lambda self: self.env.user.company_id.currency_id.id,
-        required=True
+        required=True,
     )
     
-    gain = fields.Monetary('Gain ₹', compute="_compute_gain", store=True)
-    quantity = fields.Float('Number of Units', default=1)
-    amount = fields.Monetary('NAV ₹', compute="_compute_nav", store=True)
-    total = fields.Monetary('Now ₹')
+    gain = fields.Float('Gain ₹', compute="_compute_gain", store=True)
+    quantity = fields.Float('Number of Units', default=1, tracking=True,)
+    amount = fields.Float('NAV ₹', compute="_compute_nav", store=True)
+    total = fields.Float('Now ₹', tracking=True,)
     gain_percent = fields.Integer('%', compute="_compute_gain_percent", store=True)
     
     @api.depends("total", "quantity")
@@ -114,9 +116,7 @@ class sip(models.Model):
 
     def write(self, vals):
         today = date.today()
-        if today.month != self.date.month or today.year != self.date.year:
-            raise UserError(_('You can not UPDATE a record other than this month'))
-        else:
+        if today.month == self.date.month and today.year == self.date.year:
             vals['date'] = today
             res = super(sip, self).write(vals)
             sipname = self.name
@@ -129,4 +129,7 @@ class sip(models.Model):
                 'invested': self.invested,
                 'notes': "Auto Updated By Model SIP.INVEST Update",
             })
+        else:
+            raise UserError(_('You can not UPDATE a record other than this month'))
+
         return res

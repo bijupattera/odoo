@@ -39,6 +39,11 @@
                         </group>
                     </group>
                 </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" groups="base.group_user"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
             </form>
         </field>
     </record>
@@ -73,6 +78,32 @@
                 <field name="name"/>
                 <field name="total" type="measure"/>
             </graph>
+        </field>
+    </record>
+
+        <record id="view_search_sip" model="ir.ui.view">
+        <field name="name">SIPFilters</field>
+        <field name="model">sip.invest</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="category"/>
+                <filter name="filter_small"
+                        string="Small Cap"
+                        domain="[('category','=','small')]"/>
+                <filter name="filter_mid"
+                        string="Mid Cap"
+                        domain="[('category','=','mid')]"/>
+                <filter name="filter_multi"
+                        string="Multi Cap"
+                        domain="[('category','=','multicap')]"/>
+                <filter name="filter_large"
+                        string="Large Cap"
+                        domain="[('category','=','property')]"/>
+                <filter string="By Date" name="groupby_date" context="{'group_by':'date:year'}"/>
+                <searchpanel>
+                    <field name="category" string="Category" enable_counters="1" context="{'group_by':'date:year'}"/>
+                </searchpanel>
+            </search>
         </field>
     </record>
 

@@ -1,6 +1,18 @@
 <?xml version="1.0"?>
 <odoo>
 
+      <record id="action_mark_as_due" model="ir.actions.server">
+        <field name="name">Nearby Meturity Check</field>
+        <field name="model_id" ref="model_fd_invest"/>
+        <field name="binding_model_id" ref="model_fd_invest"/>
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">
+        for record in records:
+            if record.state == 'open':
+                record.action_info_due_date()
+        </field>
+    </record>
     <record id="view_fd" model="ir.ui.view">
         <field name="name">FD Form</field>
         <field name="model">fd.invest</field>
@@ -20,6 +32,17 @@
                            widget="statusbar"/>
                 </header>
                 <sheet>
+                    <div class="alert alert-info text-center o_form_header"
+                         attrs="{'invisible': [('info_due_date', '=', False)]}"
+                         role="alert" >
+                          <a class="close" data-dismiss="alert" href="#">x</a>
+                            <div>
+                                <strong>Fixed Deposit maturity is nearby </strong>
+                            </div>
+                          <div>FD is about to mature on
+                            <field name="maturity" required="0" readonly="1"/>
+                          </div>
+                    </div>
                     <group>
                         <group>
                             <field name="name"/>
@@ -28,7 +51,9 @@
                             <field name="invested"/>
                             <field name="bank" widget="many2many_tags"/>
                             <field name="quantity"/>
-                            <field name="date_clossed"/>
+                            <field name="date_clossed" invisible="True"/>
+                            <field name="maturity"/>
+                            <field name="info_due_date" invisible="True"/>
                         </group>
                         <group>
                             <field name="total"/>
@@ -40,6 +65,11 @@
                         </group>
                     </group>
                 </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" groups="base.group_user"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
             </form>
         </field>
     </record>
@@ -48,8 +78,10 @@
         <field name="name">Deposite List</field>
         <field name="model">fd.invest</field>
         <field name="arch" type="xml">
-            <tree decoration-success="stage_id in ['gain']" decoration-warning="stage_id in ['new']"
-                  decoration-info="stage_id in ['clossed']" decoration-danger="stage_id =='loss'" sample="1">
+            <tree decoration-info="info_due_date == True"
+                  decoration-success="stage_id in ['gain']"
+                  decoration-warning="stage_id in ['new']"
+                  decoration-danger="stage_id =='loss'" sample="1">
                 <field name="date"/>
                 <field name="name"/>
                 <field name="category"/>
@@ -62,6 +94,7 @@
                 <field name="gain" sum="Gain Total"/>
                 <field name="stage_id" invisible="True"/>
                 <field name="active" invisible="True"/>
+                <field name="info_due_date" invisible="True"/>
             </tree>
         </field>
     </record>

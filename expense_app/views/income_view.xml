@@ -23,6 +23,11 @@
                         </group>
                     </group>
                 </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" groups="base.group_user"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
             </form>
         </field>
     </record>
@@ -77,6 +82,9 @@
                         string="From Interest"
                         domain="[('category','=','interest')]"/>
                 <filter string="By Date" name="groupby_date" context="{'group_by':'date'}"/>
+                <searchpanel>
+                    <field name="category" string="Category" enable_counters="1" context="{'group_by':'date:year'}"/>
+                </searchpanel>
             </search>
         </field>
     </record>
