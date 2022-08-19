@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<odoo>
+
+
+    <menuitem id="hospital_menu_root"
+              name="Hospital"
+              sequence="1"
+    />
+
+<!--    <menuitem id="menu_dboard"-->
+<!--              name="Dashboard"-->
+<!--              action="board.open_board_my_dash_action"-->
+<!--              parent="hospital_menu_root"-->
+<!--              sequence="1"-->
+<!--    />-->
+
+    <menuitem id="hospital_configuration"
+              name="Configuration"
+              parent="hospital_menu_root"
+              sequence="65"
+    />
+</odoo>

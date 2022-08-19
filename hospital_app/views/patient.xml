@@ -1,0 +1,102 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="patient_form" model="ir.ui.view">
+        <field name="name">Patient Form</field>
+        <field name="model">hospital.patient</field>
+        <field name="arch" type="xml">
+            <form string="Patient">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="date_of_birth"/>
+                            <field name="gender"/>
+                        </group>
+                        <group>
+                            <field name="age"/>
+                            <field name="notes"/>
+                            <field name="active" invisible="1"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" groups="base.group_user"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="patient_tree" model="ir.ui.view">
+        <field name="name">Patient List</field>
+        <field name="model">hospital.patient</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="date_of_birth"/>
+                <field name="age"/>
+                <field name="gender"/>
+                <field name="notes" optional="hide"/>
+                <field name="active" invisible="1"/>
+            </tree>
+        </field>
+    </record>
+    <record id="patient_search" model="ir.ui.view">
+        <field name="name">Patient Search</field>
+        <field name="model">hospital.patient</field>
+        <field name="arch" type="xml">
+            <search string="Gender">
+                <filter string="Male" name="filter_male" domain="[('gender', '=', 'male')]"/>
+                <filter string="Female" name="filter_female" domain="[('gender', '=', 'female')]"/>
+                <filter string="Archived" name="filter_archived" domain="[('active', '=', False)]"/>
+                <searchpanel>
+                    <field name="gender" string="Gender" enable_counters="1" context="{}"/>
+                </searchpanel>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_patient" model="ir.actions.act_window">
+        <field name="name">Patient</field>
+        <field name="res_model">hospital.patient</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Add a new Patient
+            </p>
+            <p>
+                Customer is GOD and treat them properly.
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="menu_patient_details"
+              name="Patients"
+              action="action_patient"
+              parent="hospital_menu_root"
+              sequence="5"
+    />
+
+        <record id="action_patient_female" model="ir.actions.act_window">
+        <field name="name">Patient Female</field>
+        <field name="res_model">hospital.patient</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('gender', '=', 'female')]</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Add a new Female Patient
+            </p>
+            <p>
+                Customer is GOD and treat them properly.
+            </p>
+        </field>
+    </record>
+<!--    <menuitem id="menu_patient_female"-->
+<!--              name="Patient Female"-->
+<!--              action="action_patient_female"-->
+<!--              parent="menu_patient_details"-->
+<!--              sequence="10"-->
+<!--    />-->
+
+</odoo>

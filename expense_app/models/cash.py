@@ -92,3 +92,4 @@ class cashinhand(models.Model):
             'notes': "Auto Updated By Model Cashinhand Unlink on : " + str(fields.Datetime.now()),
         })
         return res
+

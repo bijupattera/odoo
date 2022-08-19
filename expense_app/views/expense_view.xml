@@ -19,6 +19,7 @@
                         <group>
                             <field name="post_to_cashinhand"/>
                             <field name="total"/>
+                            <field name="company_id"/>
                             <field name="notes"/>
                             <field name="descr"/>
                         </group>

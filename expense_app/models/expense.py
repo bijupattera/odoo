@@ -13,24 +13,18 @@ class homedaily(models.Model):
         default=None,
         index=True,
         help='Item bought or expense inccured',
-        readonly=False,
         required=True,
-        translate=False,
+        tracking=True
     )
 
-    notes = fields.Text('Notes')
-    descr = fields.Text('Description')
-
-    # Numeric fields
-    currency_id = fields.Many2one(
-        'res.currency', 'Currency',
-        default=lambda self: self.env.user.company_id.currency_id.id,
-        required=True
-    )
-
-    quantity = fields.Integer(default=1)
-    amount = fields.Monetary('Price ₹', required=True,)
-    total = fields.Monetary('Total ₹', compute="_compute_total", store=True)
+    notes = fields.Text('Notes', tracking=True)
+    descr = fields.Text('Description', tracking=True)
+    company_id = fields.Many2one('res.company', string='Company', default=lambda self: self.env.user.company_id,
+                                 readonly=True)
+    currency_id = fields.Many2one('res.currency', related='company_id.currency_id', readonly=True)
+    quantity = fields.Integer(default=1, tracking=True)
+    amount = fields.Float('Price', required=True, tracking=True )
+    total = fields.Monetary('Total', compute="_compute_total", store=True)
 
     @api.depends('amount', 'quantity')
     def _compute_total(self):
@@ -39,17 +33,14 @@ class homedaily(models.Model):
 
     # Date fields
     date = fields.Date(
-        'Dated On',
+        'Dated On', tracking=True,
         default=lambda self: fields.Date.today())
     # default=lambda self: fields.Date.today().replace(month=1)) for month of Jan
 
     # Other fields
     active = fields.Boolean('Active?', default=True)
     post_to_cashinhand = fields.Boolean('Post to Cash In Hand', default=True)
-
-    # Relational fields
-    shop_ids = fields.Many2one('res.partner', string='From Shop')
-
+    shop_ids = fields.Many2one('res.partner', string='From Shop', tracking=True)
     category = fields.Selection(
         [('dailyneeds', 'DailyNeeds'),
          ('school', 'School'),
@@ -59,7 +50,7 @@ class homedaily(models.Model):
          ('agriculture', 'Agriculture'),
          ('travel', 'Travel'),
          ('charity', 'Charity')],
-        default='dailyneeds',
+        default='dailyneeds', tracking=True
     )
 
     @api.model

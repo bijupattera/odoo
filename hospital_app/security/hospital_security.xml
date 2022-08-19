@@ -1,0 +1,38 @@
+<?xml version="1.0" ?>
+<odoo>
+    <record id="module_hospitalmgmt_category" model="ir.module.category">
+        <field name="name">Hospital MGMT</field>
+    </record>
+
+    <!-- Hospital MGMT User Group -->
+    <record id="hospitalmgmt_group_user" model="res.groups">
+        <field name="name">Hospital Group Users</field>
+        <field name="category_id"
+               ref="module_hospitalmgmt_category"/>
+        <field name="implied_ids"
+               eval="[(4, ref('base.group_user'))]"/>
+    </record>
+
+    <!-- HomeDialy Group -->
+    <record id="hospitalmgmt_group_manager" model="res.groups">
+        <field name="name">Hospital Group Manager</field>
+        <field name="category_id"
+               ref="module_hospitalmgmt_category"/>
+        <field name="implied_ids"
+               eval="[(4, ref('hospitalmgmt_group_user'))]"/>
+        <field name="users"
+               eval="[(4, ref('base.user_root')),
+                  (4, ref('base.user_admin'))]"/>
+    </record>
+
+    <data noupdate="1">
+        <record id="hospitalmgmt_user_rule" model="ir.rule">
+            <field name="name">Hospital User Access</field>
+            <field name="model_id" ref="model_hospital_patient"/>
+            <field name="domain_force">
+                [('active','=',True)]
+            </field>
+            <field name="groups" eval="[(4,ref('hospitalmgmt_group_user'))]"/>
+        </record>
+    </data>
+</odoo>
