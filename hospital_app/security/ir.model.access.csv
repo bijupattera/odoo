@@ -1,3 +1,5 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_HospitalPatient_manager,Hospital Manager Access,hospital_app.model_hospital_patient,base.group_user,1,1,1,1
 access_HospitalAppointment_manager,Hospital Manager Access,hospital_app.model_hospital_appointment,base.group_user,1,1,1,1
+access_AppointmentPharmacyLine_manager,Appointment Pharmacy Line Manager Access,hospital_app.model_appointment_pharmacy_lines,base.group_user,1,1,1,1
+access_PatientTag_manager,Patient Tag Manager Access,hospital_app.model_patient_tag,base.group_user,1,1,1,1

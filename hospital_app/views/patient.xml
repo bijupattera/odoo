@@ -6,6 +6,7 @@
         <field name="arch" type="xml">
             <form string="Patient">
                 <sheet>
+                    <field name="image" widget="image" class="oe_avatar"/>
                     <group>
                         <group>
                             <field name="name"/>
@@ -15,6 +16,7 @@
                         <group>
                             <field name="age"/>
                             <field name="notes"/>
+                            <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                             <field name="active" invisible="1"/>
                         </group>
                     </group>

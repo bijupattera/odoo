@@ -14,7 +14,7 @@
 <!--              sequence="1"-->
 <!--    />-->
 
-    <menuitem id="hospital_configuration"
+    <menuitem id="menu_configuration"
               name="Configuration"
               parent="hospital_menu_root"
               sequence="65"

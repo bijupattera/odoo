@@ -12,6 +12,7 @@ class HospitalPatient(models.Model):
     name = fields.Char('Patient Name', help='Patient First Name', required=True, tracking=True)
     ref = fields.Char('Reference')
     age = fields.Integer('Age', compute='_compute_age')
+    image = fields.Image('Image')
     notes = fields.Html('Notes', tracking=True)
     date_of_birth = fields.Date('Date Of Birth', tracking=True, default=lambda self: fields.Date.today())
     active = fields.Boolean('Active?', default=True)
@@ -19,6 +20,7 @@ class HospitalPatient(models.Model):
         [('male', 'Male'),
          ('female', 'Female'),
          ('other', 'Other')], default='female', tracking=True)
+    tag_ids = fields.Many2many('patient.tag', string='Tags')
 
     @api.depends('date_of_birth')
     def _compute_age(self):

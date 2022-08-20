@@ -49,6 +49,14 @@ need a field named sequence
 _order = sequense, id  
 widget="handle" in field view  
 
+widget many20ne_avatar_user for chat
+
+options="{'collaborative'=Ture}" in field HTML make it collaborative 
+default_focus='1'
+                          
+multi_edit="1"
+color and color picker widget 
+groups="base.group_no_one" in field def to view the field only in debug mode
 
 RAINBOW MAN 
 
