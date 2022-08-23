@@ -58,6 +58,10 @@ multi_edit="1"
 color and color picker widget 
 groups="base.group_no_one" in field def to view the field only in debug mode
 
+'codeview'=true}" html code <> 
+
+if not self.ref and not vals.get('ref): 
+
 RAINBOW MAN 
 
     def action_set_won_rainbowman(self):

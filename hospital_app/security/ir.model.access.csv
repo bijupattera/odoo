@@ -3,3 +3,4 @@ access_HospitalPatient_manager,Hospital Manager Access,hospital_app.model_hospit
 access_HospitalAppointment_manager,Hospital Manager Access,hospital_app.model_hospital_appointment,base.group_user,1,1,1,1
 access_AppointmentPharmacyLine_manager,Appointment Pharmacy Line Manager Access,hospital_app.model_appointment_pharmacy_lines,base.group_user,1,1,1,1
 access_PatientTag_manager,Patient Tag Manager Access,hospital_app.model_patient_tag,base.group_user,1,1,1,1
+access_CancelAppointment_manager,Cancel Appointment Wizard Manager Access,hospital_app.model_cancel_appointment,base.group_user,1,1,1,1

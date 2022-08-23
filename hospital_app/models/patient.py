@@ -10,7 +10,7 @@ class HospitalPatient(models.Model):
     _order = 'name desc'
 
     name = fields.Char('Patient Name', help='Patient First Name', required=True, tracking=True)
-    ref = fields.Char('Reference')
+    ref = fields.Char('Reference', readonly=True)
     age = fields.Integer('Age', compute='_compute_age')
     image = fields.Image('Image')
     notes = fields.Html('Notes', tracking=True)
@@ -29,4 +29,15 @@ class HospitalPatient(models.Model):
             rec.age = date_today.year - rec.date_of_birth.year
 
 
+    @api.model
+    def create(self, vals):
+        vals['ref'] = self.env['ir.sequence'].next_by_code('hospital.patient')
+        return super(HospitalPatient, self).create(vals)
 
+    def write(self, vals):
+        if not self.ref and not vals.get('ref'):
+            vals['ref'] = self.env['ir.sequence'].next_by_code('hospital.patient')
+        return super(HospitalPatient, self).write(vals)
+
+    def name_get(self):
+        return [(record.id, "[%s] %s" % (record.ref, record.name)) for record in self]

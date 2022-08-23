@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="patient_tag_vvip" model="patient.tag">
+        <field name="name">VVIP</field>
+        <field name="color">1</field>
+    </record>
+        <record id="patient_tag_vip" model="patient.tag">
+        <field name="name">VIP</field>
+        <field name="color">2</field>
+    </record>
+        <record id="patient_tag_icu" model="patient.tag">
+        <field name="name">ICU</field>
+        <field name="color">3</field>
+    </record>
+        <record id="patient_tag_ccu" model="patient.tag">
+        <field name="name">CCU</field>
+        <field name="color">4</field>
+        <field name="active" eval="False"/>
+    </record>
+</odoo>

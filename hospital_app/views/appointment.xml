@@ -6,15 +6,20 @@
         <field name="arch" type="xml">
             <form string="Appointment">
                 <header>
-                    <button name="mark_cancel" string="Cancel Appointment" states="draft" type="object"
+<!--                    <button name="mark_cancel" string="Cancel Appointment" states="draft" type="object"-->
+<!--                            class="oe_highlight" confirm="Are you sure to cancel this Appointment"/>-->
+<!--                    two option to open wizard with button one above and one below-->
+                    <button name="%(hospital_app.action_cancel_appointment)d"
+                            context="{'default_appointment_id': active_id}"
+                            string="Cancel Appointment" states="draft" type="action"
                             class="oe_highlight" confirm="Are you sure to cancel this Appointment"/>
-                    <!--                    <button name="set_open" string="Stop Recruitment" states="recruit" type="object" groups="base.group_user"/>-->
                     <field name="state" widget="statusbar" statusbar_visible="draft,in_consultation,done" nolabel="1"
                            options="{'clickable': '1'}"/>
                 </header>
                 <sheet>
-                    <div class="oe_title">
+                     <div class="oe_title">
                         <h1>
+                            <field name="ref"/>
                             <field name="priority" widget="priority"/>
                         </h1>
                     </div>
@@ -40,7 +45,7 @@
                         </page>
                         <page string="Pharmacy" name="pharmacy_lines">
                                 <field name="pharmacy_line_ids">
-<!--                                   need to  define a tree and from view inside the view-->
+<!--                                   one2many feild need  a tree and from view inside the view-->
                                     <tree editable="bottom">
                                         <field name="product_id"/>
                                         <field name="price"/>
@@ -76,6 +81,7 @@
                   decoration-danger="state == 'canceled'"
                   decoration-success="state == 'done'" multi_edit="1">
                 <field name="patient_id"/>
+                <field name="ref"/>
                 <field name="doctor_id" widget="many2one_avatar_user"/>
                 <field name="appointment_time"/>
                 <field name="booking_time"/>
@@ -91,12 +97,31 @@
             </tree>
         </field>
     </record>
+        <record id="appointment_activity" model="ir.ui.view">
+        <field name="name">Appointment Activity</field>
+        <field name="model">hospital.appointment</field>
+        <field name="arch" type="xml">
+            <activity string="Appointment">
+                <field name="patient_id"/>
+                <templates>
+                    <div t-name="activity-box">
+                        <img t-att-src="activity_image('hospital.patient', 'image', record.patient_id.raw_value)"
+                             t-att-title="record.patient_id.value" t-att-alt="record.patient_id.value"/>
+                        <div>
+                            <field name="patient_id" display="full"/>
+                        </div>
+                    </div>
+                </templates>
+            </activity>
+        </field>
+    </record>
 
     <record id="appointment_search" model="ir.ui.view">
         <field name="name">Appointment Search</field>
         <field name="model">hospital.appointment</field>
         <field name="arch" type="xml">
-            <search string="State">
+            <search string="Appointments">
+                <field name="patient_id" filter_domain="['|', ('patient_id','ilike',self), ('ref','ilike',self)]" string="Appointment"/>
                 <filter string="Draft" name="filter_draft" domain="[('state', '=', 'draft')]"/>
                 <filter string="Done" name="filter_done" domain="[('state', '=', 'done')]"/>
                 <filter string="In Consultation" name="filter_in_consultation"
@@ -112,7 +137,7 @@
     <record id="action_appointment" model="ir.actions.act_window">
         <field name="name">Appointment</field>
         <field name="res_model">hospital.appointment</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">tree,form,activity</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 Add a new Appointment
@@ -123,11 +148,17 @@
         </field>
     </record>
 
-    <menuitem id="menu_appointment"
+    <menuitem id="menu_appointments"
               name="Appointments"
-              action="action_appointment"
               parent="hospital_menu_root"
               sequence="10"
+    />
+
+        <menuitem id="menu_appointments_appointments"
+              name="Appointments"
+              action="action_appointment"
+              parent="menu_appointments"
+              sequence="5"
     />
 
 

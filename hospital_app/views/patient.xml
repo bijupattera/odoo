@@ -12,9 +12,10 @@
                             <field name="name"/>
                             <field name="date_of_birth"/>
                             <field name="gender"/>
+                             <field name="age"/>
                         </group>
                         <group>
-                            <field name="age"/>
+                            <field name="ref"/>
                             <field name="notes"/>
                             <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                             <field name="active" invisible="1"/>
@@ -36,6 +37,7 @@
         <field name="arch" type="xml">
             <tree>
                 <field name="name"/>
+                <field name="ref"/>
                 <field name="date_of_birth"/>
                 <field name="age"/>
                 <field name="gender"/>
@@ -80,20 +82,20 @@
               sequence="5"
     />
 
-        <record id="action_patient_female" model="ir.actions.act_window">
-        <field name="name">Patient Female</field>
-        <field name="res_model">hospital.patient</field>
-        <field name="view_mode">tree,form</field>
-        <field name="domain">[('gender', '=', 'female')]</field>
-        <field name="help" type="html">
-            <p class="o_view_nocontent_smiling_face">
-                Add a new Female Patient
-            </p>
-            <p>
-                Customer is GOD and treat them properly.
-            </p>
-        </field>
-    </record>
+<!--        <record id="action_patient_female" model="ir.actions.act_window">-->
+<!--        <field name="name">Patient Female</field>-->
+<!--        <field name="res_model">hospital.patient</field>-->
+<!--        <field name="view_mode">tree,form</field>-->
+<!--        <field name="domain">[('gender', '=', 'female')]</field>-->
+<!--        <field name="help" type="html">-->
+<!--            <p class="o_view_nocontent_smiling_face">-->
+<!--                Add a new Female Patient-->
+<!--            </p>-->
+<!--            <p>-->
+<!--                Customer is GOD and treat them properly.-->
+<!--            </p>-->
+<!--        </field>-->
+<!--    </record>-->
 <!--    <menuitem id="menu_patient_female"-->
 <!--              name="Patient Female"-->
 <!--              action="action_patient_female"-->

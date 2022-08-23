@@ -7,6 +7,10 @@
  'data': [
      'security/hospital_security.xml',
      'security/ir.model.access.csv',
+     'data/patient_tag_data.xml',
+     'data/patient.tag.csv',
+     'data/sequence.xml',
+     'wizard/cancel_appointment.xml',
      'views/hospital_menu.xml',
      'views/patient.xml',
      'views/patient_tag.xml',

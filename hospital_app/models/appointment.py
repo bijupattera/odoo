@@ -6,9 +6,11 @@ class HospitalAppointment(models.Model):
     _name = 'hospital.appointment'
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = 'Appointment Record'
-    _rec_name = 'patient_id'
+    _rec_name = 'ref'
 
+    appointment_id = fields.Char('Appointment ID', readonly=True)
     patient_id = fields.Many2one('hospital.patient', 'Patient', tracking=True)
+    ref = fields.Char('Reference', readonly=True)
     appointment_time = fields.Datetime('Appointment Date', tracking=True, default=fields.Datetime.now())
     booking_time = fields.Datetime('Time of Booking', tracking=True, readonly=True, default=fields.Datetime.now())
     cancel_time = fields.Datetime('Time of Cancel', tracking=True, readonly=True)
@@ -33,11 +35,19 @@ class HospitalAppointment(models.Model):
             else:
                 rec.age = 1
 
-    def mark_cancel(self):
-        for rec in self:
-            rec.state = 'canceled'
-            rec.cancel_time = fields.Datetime.now()
+    # def mark_cancel(self):
+    #     for rec in self:
+    #         rec.state = 'canceled'
+    #         rec.cancel_time = fields.Datetime.now()
 
+    def mark_cancel(self):
+        action = self.env.ref('hospital_app.action_cancel_appointment').read()[0]
+        return action
+
+    @api.model
+    def create(self, vals):
+        vals['ref'] = self.env['ir.sequence'].next_by_code('hospital.appointment')
+        return super(HospitalAppointment, self).create(vals)
 
 class AppointmentPharmacyLines(models.Model):
     _name = 'appointment.pharmacy.lines'

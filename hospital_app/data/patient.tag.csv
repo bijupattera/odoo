@@ -1,0 +1,3 @@
+id,name,color,active
+patient_tag_nicu,NICU,5,True
+patient_tag_nnicu,NNICU,6,True
