@@ -35,7 +35,7 @@
         <field name="name">Patient List</field>
         <field name="model">hospital.patient</field>
         <field name="arch" type="xml">
-            <tree>
+            <tree export_xlsx="0">
                 <field name="name"/>
                 <field name="ref"/>
                 <field name="date_of_birth"/>
@@ -87,6 +87,7 @@
 <!--        <field name="res_model">hospital.patient</field>-->
 <!--        <field name="view_mode">tree,form</field>-->
 <!--        <field name="domain">[('gender', '=', 'female')]</field>-->
+<!--        <field name="context">{'default_gender': 'female', default_age': 25, 'hide_gender': 1}</field>-->
 <!--        <field name="help" type="html">-->
 <!--            <p class="o_view_nocontent_smiling_face">-->
 <!--                Add a new Female Patient-->

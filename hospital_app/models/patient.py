@@ -1,6 +1,7 @@
 from datetime import date, timedelta
+from odoo import api, fields, models, _
+from odoo.exceptions import ValidationError
 
-from odoo import api, fields, models
 
 
 class HospitalPatient(models.Model):
@@ -10,6 +11,7 @@ class HospitalPatient(models.Model):
     _order = 'name desc'
 
     name = fields.Char('Patient Name', help='Patient First Name', required=True, tracking=True)
+    last_name = fields.Char('Patient Name', help='Patient First Name', required=True, tracking=True)
     ref = fields.Char('Reference', readonly=True)
     age = fields.Integer('Age', compute='_compute_age')
     image = fields.Image('Image')
@@ -28,6 +30,16 @@ class HospitalPatient(models.Model):
         for rec in self:
             rec.age = date_today.year - rec.date_of_birth.year
 
+    @api.constrains('date_of_birth')
+    def _check_date_of_birth(self):
+        for rec in self:
+            if rec.date_of_birth > fields.Date.today():
+                raise ValidationError(_('Entered Date Of Birth is not valid'))
+
+    _sql_constraints = [
+        ('name_uniq', 'unique(name, active)', 'The name already exists and must be unique!'),
+        ('color_check', 'CHECK(color >= 0)', 'The expected number of a color must be nonzero positive.')
+    ]
 
     @api.model
     def create(self, vals):

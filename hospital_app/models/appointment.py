@@ -1,5 +1,6 @@
 from datetime import date
-from odoo import api, fields, models
+from odoo import api, fields, models, _
+from odoo.exceptions import ValidationError
 
 
 class HospitalAppointment(models.Model):
@@ -48,6 +49,12 @@ class HospitalAppointment(models.Model):
     def create(self, vals):
         vals['ref'] = self.env['ir.sequence'].next_by_code('hospital.appointment')
         return super(HospitalAppointment, self).create(vals)
+
+    def unlink(self):
+        if self.state != 'draft':
+            raise ValidationError(_("You can delete Records in Draft state only"))
+        return super(HospitalAppointment, self).unlink()
+
 
 class AppointmentPharmacyLines(models.Model):
     _name = 'appointment.pharmacy.lines'

@@ -1,6 +1,7 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 
-from odoo import api, fields, models
+from odoo import api, fields, models, _
+from odoo.exceptions import ValidationError
 
 
 class CancelAppointmentWizard(models.TransientModel):
@@ -16,10 +17,12 @@ class CancelAppointmentWizard(models.TransientModel):
         return res
 
     appointment_id = fields.Many2one('hospital.appointment', string='Appointment',
+                                     domain=[('state', '=', 'draft'), ('priority', 'in', ('1', '0', False))],
                                      help='Cancel Appointment Wizard', required=True)
     reason = fields.Text('Reason')
     cancel_time = fields.Datetime('Cancel Time')
 
     def action_cancel_appointment(self):
+        if self.appointment_id.appointment_time < (fields.Datetime.now() + timedelta(days=1)):
+            raise ValidationError(_("Sorry, Appointment cancellation is allowed minimum one day before"))
         return
-

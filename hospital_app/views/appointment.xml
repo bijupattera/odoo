@@ -10,9 +10,10 @@
 <!--                            class="oe_highlight" confirm="Are you sure to cancel this Appointment"/>-->
 <!--                    two option to open wizard with button one above and one below-->
                     <button name="%(hospital_app.action_cancel_appointment)d"
-                            context="{'default_appointment_id': active_id}"
+                            context="{'default_appointment_id': active_id, 'hide_appointment_id': '1'}"
                             string="Cancel Appointment" states="draft" type="action"
                             class="oe_highlight" confirm="Are you sure to cancel this Appointment"/>
+                    <!-- context above pushing a value to hide the appointment in cancel_appointment view-->
                     <field name="state" widget="statusbar" statusbar_visible="draft,in_consultation,done" nolabel="1"
                            options="{'clickable': '1'}"/>
                 </header>
@@ -79,7 +80,7 @@
             <tree decoration-warning="state == 'in_consultation'"
                   decoration-info="state  == 'draft'"
                   decoration-danger="state == 'canceled'"
-                  decoration-success="state == 'done'" multi_edit="1">
+                  decoration-success="state == 'done'" multi_edit="1" export_xlsx="0">
                 <field name="patient_id"/>
                 <field name="ref"/>
                 <field name="doctor_id" widget="many2one_avatar_user"/>
