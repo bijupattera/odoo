@@ -68,7 +68,6 @@ class fd(models.Model):
                 record.info_due_date = True
             else:
                 record.info_due_date = False
-            print(record.name, due_date)
 
     @api.depends("invested")
     def _compute_total(self):

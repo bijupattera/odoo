@@ -77,10 +77,13 @@
         <field name="name">Appointment List</field>
         <field name="model">hospital.appointment</field>
         <field name="arch" type="xml">
-            <tree decoration-warning="state == 'in_consultation'"
-                  decoration-info="state  == 'draft'"
-                  decoration-danger="state == 'canceled'"
-                  decoration-success="state == 'done'" multi_edit="1" export_xlsx="0">
+            <tree decoration-warning="state == 'in_consultation'" decoration-info="state  == 'draft'"
+                  decoration-danger="state == 'canceled'" decoration-success="state == 'done'"
+                  multi_edit="1" export_xlsx="0">
+                <header>
+                    <button name="action_cancel" type="object" string="Cancel"/>
+<!-- in base module example-   invisible="context.get('default_move_type') not in ('out_invoice', 'out_refund', 'out_receipt', 'in_invoice', 'in_refund','in_receipt')"/>-->
+                </header>
                 <field name="patient_id"/>
                 <field name="ref"/>
                 <field name="doctor_id" widget="many2one_avatar_user"/>
@@ -89,12 +92,23 @@
                 <field name="gender"/>
                 <field name="age"/>
                 <field name="date_of_birth"/>
+                <field name="activity_ids" widget="list_activity"/>
                 <field name="state" widget="badge"
                        decoration-warning="state == 'in_consultation'"
                        decoration-info="state  == 'draft'"
                        decoration-danger="state == 'canceled'"
                        decoration-success="state == 'done'"/>
-                <field name="activity_ids" widget="list_activity"/>
+                <button name="action_done" class="fa fa-check btn-success" string=" " type="object"
+                        attrs="{'invisible': [('state', '!=', 'in_consultation')]}"/>
+                <button name="%(hospital_app.action_cancel_appointment)d" string=" " states="draft" type="action"
+                        context="{'default_appointment_id': active_id, 'hide_appointment_id': '1'}"
+                        class="fa fa-times btn-danger"
+                        attrs="{'invisible': [('state', 'not in', ('draft'))]}"/>
+                <groupby name="patient_id">
+<!--                    action method must be on co model in this case hospital.patient-->
+                    <button name="action_test" class="oe_highlight" string="Test" type="object"/>
+                    <button name="edir" class="oe_highlight" string="Edit" type="edit"/>
+                </groupby>
             </tree>
         </field>
     </record>
@@ -123,6 +137,9 @@
         <field name="arch" type="xml">
             <search string="Appointments">
                 <field name="patient_id" filter_domain="['|', ('patient_id','ilike',self), ('ref','ilike',self)]" string="Appointment"/>
+                <field name="age" />
+                <field name="ref" />
+                <field name="gender" />
                 <filter string="Draft" name="filter_draft" domain="[('state', '=', 'draft')]"/>
                 <filter string="Done" name="filter_done" domain="[('state', '=', 'done')]"/>
                 <filter string="In Consultation" name="filter_in_consultation"

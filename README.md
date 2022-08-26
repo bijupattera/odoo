@@ -62,8 +62,13 @@ groups="base.group_no_one" in field def to view the field only in debug mode
 
 if not self.ref and not vals.get('ref): 
 
-RAINBOW MAN 
+readonly = "1" force_save = "1" to write value to a readonly compute field in field def
 
+many to many check boxe widget
+
+many2one selection widget
+
+RAINBOW MAN 
     def action_set_won_rainbowman(self):
         self.ensure_one()
         self.action_set_won()

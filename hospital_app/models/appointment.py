@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, timedelta
 from odoo import api, fields, models, _
 from odoo.exceptions import ValidationError
 
@@ -17,7 +17,7 @@ class HospitalAppointment(models.Model):
     cancel_time = fields.Datetime('Time of Cancel', tracking=True, readonly=True)
     gender = fields.Selection(related='patient_id.gender')
     date_of_birth = fields.Date(related='patient_id.date_of_birth')
-    age = fields.Integer('Age', compute='_compute_age', )
+    age = fields.Integer('Age', compute='_compute_age', search='_search_age')
     prescription = fields.Html('Prescription')
     priority = fields.Selection([('0', 'Very Low'), ('1', 'Low'), ('2', 'Normal'),
                                  ('3', 'High')], string='Priority')
@@ -25,7 +25,6 @@ class HospitalAppointment(models.Model):
                               ('canceled', 'Canceled')], string='State', default='draft')
     doctor_id = fields.Many2one('res.users', string='Doctor')
     pharmacy_line_ids = fields.One2many('appointment.pharmacy.lines', 'appointment_id', string='Pharmacy Lines')
-
 
     @api.depends('date_of_birth')
     def _compute_age(self):
@@ -36,10 +35,25 @@ class HospitalAppointment(models.Model):
             else:
                 rec.age = 1
 
-    # def mark_cancel(self):
-    #     for rec in self:
-    #         rec.state = 'canceled'
-    #         rec.cancel_time = fields.Datetime.now()
+    def _search_age(self, operator, value):
+        date_of_birth = date.today() - timedelta(days=(value*365))
+        start_of_year = date_of_birth.replace(month=1, day=1)
+        end_of_year = date_of_birth.replace(month=12, day=31)
+        return [('date_of_birth', '>=', start_of_year), ('date_of_birth', '<=', end_of_year)]
+
+    def action_cancel(self):
+        for rec in self:
+            if rec.state != 'draft':
+                raise ValidationError(_("You can cancel Records in Draft state only"))
+            rec.state = 'canceled'
+            rec.cancel_time = fields.Datetime.now()
+
+    def action_done(self):
+        for rec in self:
+            if rec.state != 'in_consultation':
+                raise ValidationError(_("Record not in a state to mark as Done"))
+            rec.state = 'done'
+
 
     def mark_cancel(self):
         action = self.env.ref('hospital_app.action_cancel_appointment').read()[0]

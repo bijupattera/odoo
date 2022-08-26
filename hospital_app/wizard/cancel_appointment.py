@@ -24,5 +24,7 @@ class CancelAppointmentWizard(models.TransientModel):
 
     def action_cancel_appointment(self):
         if self.appointment_id.appointment_time < (fields.Datetime.now() + timedelta(days=1)):
-            raise ValidationError(_("Sorry, Appointment cancellation is allowed minimum one day before"))
-        return
+            raise ValidationError(_("Sorry, Appointment cancellation is allowed minimum of one day before"))
+        self.appointment_id.state = 'canceled'
+
+
