@@ -7,7 +7,7 @@ class HospitalPatient(models.Model):
     _name = 'hospital.patient'
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = 'Patient Record'
-    _order = 'name desc'
+    _order = 'ref desc'
 
     name = fields.Char('Patient Name', help='Patient First Name', required=True, tracking=True)
     last_name = fields.Char('Last Name', help='Patient Last Name', required=True, tracking=True)
@@ -34,7 +34,7 @@ class HospitalPatient(models.Model):
          ('female', 'Female'),
          ('other', 'Other')], default='female', tracking=True, required=True)
     tag_ids = fields.Many2many('patient.tag', string='Tags')
-    appointment_ids = fields.One2many('hospital.appointment', 'patient_id', string='Appointments', readonly=True)
+    appointment_ids = fields.One2many('hospital.appointment', 'patient_id', string='Appointments')
     appointment_count = fields.Integer('Appointment Count', compute='_compute_appointment_count', store=True)
 
     @api.depends('date_of_birth')

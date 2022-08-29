@@ -67,6 +67,30 @@ readonly = "1" force_save = "1" to write value to a readonly compute field in fi
 many to many check boxe widget
 
 many2one selection widget
+_log_access = False
+
+Name create function
+    @api.model
+    def name_create(self, name):
+        return self.create({'appointment_id': name}).name_get()[0]
+
+Hide groups from users form view 
+class ResGroups(models.Model):
+    _inherit = 'res.groups'
+
+    @api.model
+    def get_application_groups(self, domain):
+        group2hide = self.env.ref('group_externel_id').id
+        return super(ResGroups, self).get_application_groups(domain + [('id', '!=', group2hide)])
+
+Referance Feild 
+
+Get Metadata
+Trim = False fielt def
+
+Active Test
+self.env['hospital.patient'].with_context(active_test=False).search_count([]) 
+
 
 RAINBOW MAN 
     def action_set_won_rainbowman(self):

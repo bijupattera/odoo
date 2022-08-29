@@ -9,6 +9,13 @@ class HospitalAppointment(models.Model):
     _description = 'Appointment Record'
     _rec_name = 'ref'
 
+    # @api.model
+    # def default_get(self, fields):
+    #     res = super(HospitalAppointment, self).default_get(fields)
+    #     if not self.env.context.get('patient_id'):
+    #         res['default_patient_id'] = self.env.context.get('patient_id')
+    #     return res
+
     appointment_id = fields.Char('Appointment ID', readonly=True)
     patient_id = fields.Many2one('hospital.patient', 'Patient', tracking=True)
     ref = fields.Char('Reference', readonly=True)
@@ -22,7 +29,7 @@ class HospitalAppointment(models.Model):
     priority = fields.Selection([('0', 'Very Low'), ('1', 'Low'), ('2', 'Normal'),
                                  ('3', 'High')], string='Priority')
     state = fields.Selection([('draft', 'Draft'), ('in_consultation', 'In Consultation'), ('done', 'Done'),
-                              ('canceled', 'Canceled')], string='State', default='draft')
+                              ('canceled', 'Canceled')], string='State')
     doctor_id = fields.Many2one('res.users', string='Doctor')
     pharmacy_line_ids = fields.One2many('appointment.pharmacy.lines', 'appointment_id', string='Pharmacy Lines')
 
@@ -36,7 +43,7 @@ class HospitalAppointment(models.Model):
                 rec.age = 1
 
     def _search_age(self, operator, value):
-        date_of_birth = date.today() - timedelta(days=(value*365))
+        date_of_birth = date.today() - timedelta(days=(value * 365))
         start_of_year = date_of_birth.replace(month=1, day=1)
         end_of_year = date_of_birth.replace(month=12, day=31)
         return [('date_of_birth', '>=', start_of_year), ('date_of_birth', '<=', end_of_year)]
@@ -54,7 +61,6 @@ class HospitalAppointment(models.Model):
                 raise ValidationError(_("Record not in a state to mark as Done"))
             rec.state = 'done'
 
-
     def mark_cancel(self):
         action = self.env.ref('hospital_app.action_cancel_appointment').read()[0]
         return action
@@ -62,6 +68,7 @@ class HospitalAppointment(models.Model):
     @api.model
     def create(self, vals):
         vals['ref'] = self.env['ir.sequence'].next_by_code('hospital.appointment')
+        vals['state'] = 'draft'
         return super(HospitalAppointment, self).create(vals)
 
     def unlink(self):
