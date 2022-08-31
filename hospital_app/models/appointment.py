@@ -9,15 +9,16 @@ class HospitalAppointment(models.Model):
     _description = 'Appointment Record'
     _rec_name = 'ref'
 
-    # @api.model
-    # def default_get(self, fields):
-    #     res = super(HospitalAppointment, self).default_get(fields)
-    #     if not self.env.context.get('patient_id'):
-    #         res['default_patient_id'] = self.env.context.get('patient_id')
-    #     return res
+    @api.model
+    def default_get(self, fields):
+        res = super(HospitalAppointment, self).default_get(fields)
+        #if not self.env.context.get('default_patient_id'):
+        res['patient_id'] = self.env.context.get('default_patient_id')
+        return res
 
     appointment_id = fields.Char('Appointment ID', readonly=True)
-    patient_id = fields.Many2one('hospital.patient', 'Patient', tracking=True)
+    active = fields.Boolean('Active', default=True)
+    patient_id = fields.Many2one('hospital.patient', 'Patient', tracking=True, required=True)
     ref = fields.Char('Reference', readonly=True)
     appointment_time = fields.Datetime('Appointment Date', tracking=True, default=fields.Datetime.now())
     booking_time = fields.Datetime('Time of Booking', tracking=True, readonly=True, default=fields.Datetime.now())
@@ -30,8 +31,9 @@ class HospitalAppointment(models.Model):
                                  ('3', 'High')], string='Priority')
     state = fields.Selection([('draft', 'Draft'), ('in_consultation', 'In Consultation'), ('done', 'Done'),
                               ('canceled', 'Canceled')], string='State')
-    doctor_id = fields.Many2one('res.users', string='Doctor')
+    doctor_id = fields.Many2one('res.users', string='Doctor', required=True)
     pharmacy_line_ids = fields.One2many('appointment.pharmacy.lines', 'appointment_id', string='Pharmacy Lines')
+
 
     @api.depends('date_of_birth')
     def _compute_age(self):
@@ -54,6 +56,7 @@ class HospitalAppointment(models.Model):
                 raise ValidationError(_("You can cancel Records in Draft state only"))
             rec.state = 'canceled'
             rec.cancel_time = fields.Datetime.now()
+            rec.active = False
 
     def action_done(self):
         for rec in self:
@@ -65,11 +68,25 @@ class HospitalAppointment(models.Model):
         action = self.env.ref('hospital_app.action_cancel_appointment').read()[0]
         return action
 
+    def set_sl_numbers(self):
+        sl_no = 0
+        for line in self.pharmacy_line_ids:
+            sl_no += 1
+            line.sl_no = sl_no
+        return
+
     @api.model
     def create(self, vals):
         vals['ref'] = self.env['ir.sequence'].next_by_code('hospital.appointment')
         vals['state'] = 'draft'
-        return super(HospitalAppointment, self).create(vals)
+        res = super(HospitalAppointment, self).create(vals)
+        res.set_sl_numbers()
+        return res
+
+    def write(self, vals):
+        res = super(HospitalAppointment, self).write(vals)
+        self.set_sl_numbers()
+        return res
 
     def unlink(self):
         if self.state != 'draft':
@@ -82,6 +99,7 @@ class AppointmentPharmacyLines(models.Model):
     _description = 'Appointment Pharmacy Lines'
     _rec_name = 'product_id'
 
+    sl_no = fields.Integer('SL NO')
     product_id = fields.Many2one('product.product', 'Medicine', required=True)
     price = fields.Float(related='product_id.list_price', string='Price')
     qty = fields.Integer('Quantity', default=1)

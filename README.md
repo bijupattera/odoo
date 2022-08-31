@@ -84,12 +84,37 @@ class ResGroups(models.Model):
         return super(ResGroups, self).get_application_groups(domain + [('id', '!=', group2hide)])
 
 Referance Feild 
+message_post
 
 Get Metadata
 Trim = False fielt def
 
 Active Test
 self.env['hospital.patient'].with_context(active_test=False).search_count([]) 
+
+Display Notification with next and url
+           return {
+                'type': 'ir.actions.client',
+                'tag': 'display_notification',
+                'params': {
+                    'title': _('The following replenishment order has been generated'),
+                    'message': '%s',
+                    'links': [{
+                        'label': production.name,
+                        'url': f'#action={action.id}&id={production.id}&model=home.daily'
+                    }],
+                    'sticky': False,
+                    'next': {'type': 'ir.actions.act_window',
+                             'ress_model': '',
+                                'res_id': self.id,
+                                'views': [[False,'form']]
+                    }
+                }
+            }
+
+
+
+
 
 
 RAINBOW MAN 

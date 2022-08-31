@@ -21,6 +21,7 @@
                      <div class="oe_title">
                         <h1>
                             <field name="ref"/>
+                            <field name="active" invisible="1"/>
                             <field name="priority" widget="priority"/>
                         </h1>
                     </div>
@@ -46,11 +47,12 @@
                         </page>
                         <page string="Pharmacy" name="pharmacy_lines">
                                 <field name="pharmacy_line_ids">
-<!--                                   one2many feild need  a tree and from view inside the view-->
+<!--                                   one2many feild need  a tree and from view inside the filed -->
                                     <tree editable="bottom">
+                                        <field name="sl_no" class="text-center"/>
                                         <field name="product_id"/>
                                         <field name="price"/>
-                                        <field name="qty"/>
+                                        <field name="qty" class="text-center"/>
                                         <field name="total" sum="Total"/>
                                     </tree>
                                      <form>
@@ -86,6 +88,7 @@
                 </header>
                 <field name="patient_id"/>
                 <field name="ref"/>
+                <field name="active" invisible="1"/>
                 <field name="doctor_id" widget="many2one_avatar_user"/>
                 <field name="appointment_time"/>
                 <field name="booking_time"/>
