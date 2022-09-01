@@ -24,13 +24,6 @@
         </field>
     </record>
 
-    <record id="action_cancel_appointment" model="ir.actions.act_window">
-        <field name="name">Cancel Appointment</field>
-        <field name="res_model">cancel.appointment</field>
-        <field name="view_mode">form</field>
-        <field name="target">new</field>
-    </record>
-
     <menuitem id="menu_cancel_appointment"
               name="Cancellation"
               action="action_cancel_appointment"

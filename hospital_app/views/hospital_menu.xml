@@ -4,7 +4,7 @@
 
     <menuitem id="hospital_menu_root"
               name="Hospital"
-              sequence="1"
+              sequence="-100"
     />
 
 <!--    <menuitem id="menu_dboard"-->
@@ -19,4 +19,19 @@
               parent="hospital_menu_root"
               sequence="65"
     />
+
+    <record id="action_add_appointment" model="ir.actions.act_window">
+        <field name="name">Add Appointment</field>
+        <field name="res_model">hospital.appointment</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+        <record id="action_cancel_appointment" model="ir.actions.act_window">
+        <field name="name">Cancel Appointment</field>
+        <field name="res_model">cancel.appointment</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
 </odoo>

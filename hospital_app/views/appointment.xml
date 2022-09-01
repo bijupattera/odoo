@@ -169,14 +169,6 @@
         </field>
     </record>
 
-    <record id="action_add_appointment" model="ir.actions.act_window">
-        <field name="name">Add Appointment</field>
-        <field name="res_model">hospital.appointment</field>
-        <field name="view_mode">form</field>
-        <field name="target">new</field>
-    </record>
-
-
     <menuitem id="menu_appointments"
               name="Appointments"
               parent="hospital_menu_root"
