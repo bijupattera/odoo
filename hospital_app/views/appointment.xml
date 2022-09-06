@@ -6,9 +6,9 @@
         <field name="arch" type="xml">
             <form string="Appointment">
                 <header>
-<!--                    <button name="mark_cancel" string="Cancel Appointment" states="draft" type="object"-->
-<!--                            class="oe_highlight" confirm="Are you sure to cancel this Appointment"/>-->
-<!--                    two option to open wizard with button one above and one below-->
+                    <!--                    <button name="mark_cancel" string="Cancel Appointment" states="draft" type="object"-->
+                    <!--                            class="oe_highlight" confirm="Are you sure to cancel this Appointment"/>-->
+                    <!--                    two option to open wizard with button one above and one below-->
                     <button name="%(hospital_app.action_cancel_appointment)d"
                             context="{'default_appointment_id': active_id, 'hide_appointment_id': '1'}"
                             string="Cancel Appointment" states="draft" type="action"
@@ -18,7 +18,7 @@
                            options="{'clickable': '1'}"/>
                 </header>
                 <sheet>
-                     <div class="oe_title">
+                    <div class="oe_title">
                         <h1>
                             <field name="ref"/>
                             <field name="active" invisible="1"/>
@@ -46,23 +46,23 @@
                             </group>
                         </page>
                         <page string="Pharmacy" name="pharmacy_lines">
-                                <field name="pharmacy_line_ids">
-<!--                                   one2many feild need  a tree and from view inside the filed -->
-                                    <tree editable="bottom">
-                                        <field name="sl_no" class="text-center"/>
-                                        <field name="product_id"/>
-                                        <field name="price"/>
-                                        <field name="qty" class="text-center"/>
-                                        <field name="total" sum="Total"/>
-                                    </tree>
-                                     <form>
-                                        <field name="product_id"/>
-                                        <field name="price"/>
-                                        <field name="qty"/>
-                                        <field name="total"/>
-                                    </form>
-                                </field>
-<!--                                field clossing here -->
+                            <field name="pharmacy_line_ids">
+                                <!--                                   one2many feild need  a tree and from view inside the filed -->
+                                <tree editable="bottom">
+                                    <field name="sl_no" class="text-center"/>
+                                    <field name="product_id"/>
+                                    <field name="price"/>
+                                    <field name="qty" class="text-center"/>
+                                    <field name="total" sum="Total"/>
+                                </tree>
+                                <form>
+                                    <field name="product_id"/>
+                                    <field name="price"/>
+                                    <field name="qty"/>
+                                    <field name="total"/>
+                                </form>
+                            </field>
+                            <!--                                field clossing here -->
                         </page>
                     </notebook>
                 </sheet>
@@ -84,12 +84,13 @@
                   multi_edit="1" export_xlsx="0">
                 <header>
                     <button name="action_cancel" type="object" string="Cancel"/>
-<!-- in base module example-   invisible="context.get('default_move_type') not in ('out_invoice', 'out_refund', 'out_receipt', 'in_invoice', 'in_refund','in_receipt')"/>-->
+                    <!-- in base module example-   invisible="context.get('default_move_type') not in ('out_invoice', 'out_refund', 'out_receipt', 'in_invoice', 'in_refund','in_receipt')"/>-->
                 </header>
                 <field name="patient_id"/>
                 <field name="ref"/>
                 <field name="active" invisible="1"/>
-                <field name="doctor_id" widget="many2one_avatar_user"/>
+                <field name="doctor_id" widget="many2one_avatar_user"
+                       attrs="{'invisible': [('doctor_id', '!=', 'uid')]}"/>
                 <field name="appointment_time"/>
                 <field name="booking_time"/>
                 <field name="gender"/>
@@ -108,14 +109,28 @@
                         class="fa fa-times btn-danger"
                         attrs="{'invisible': [('state', 'not in', ('draft'))]}"/>
                 <groupby name="patient_id">
-<!--                    action method must be on co model in this case hospital.patient-->
+                    <!--                    action method must be on co model in this case hospital.patient-->
                     <button name="action_test" class="oe_highlight" string="Test" type="object"/>
                     <button name="edir" class="oe_highlight" string="Edit" type="edit"/>
                 </groupby>
             </tree>
         </field>
     </record>
-        <record id="appointment_activity" model="ir.ui.view">
+
+    <record model="ir.ui.view" id="appointment_calendar">
+        <field name="model">hospital.appointment</field>
+        <field name="priority" eval="2"/>
+        <field name="arch" type="xml">
+            <calendar string="Appointments" date_start="appointment_time" color="state" mode="day" quick_add="False">
+                <field name="ref"/>
+                <field name="patient_id"/>
+                <field name="doctor_id"/>
+                <field name="state"/>
+            </calendar>
+        </field>
+    </record>
+
+    <record id="appointment_activity" model="ir.ui.view">
         <field name="name">Appointment Activity</field>
         <field name="model">hospital.appointment</field>
         <field name="arch" type="xml">
@@ -139,17 +154,18 @@
         <field name="model">hospital.appointment</field>
         <field name="arch" type="xml">
             <search string="Appointments">
-                <field name="patient_id" filter_domain="['|', ('patient_id','ilike',self), ('ref','ilike',self)]" string="Appointment"/>
-                <field name="age" />
-                <field name="ref" />
-                <field name="gender" />
+                <field name="patient_id" filter_domain="['|', ('patient_id','ilike',self), ('ref','ilike',self)]"
+                       string="Appointment"/>
+                <field name="age"/>
+                <field name="ref"/>
+                <field name="gender"/>
                 <filter string="Draft" name="filter_draft" domain="[('state', '=', 'draft')]"/>
                 <filter string="Done" name="filter_done" domain="[('state', '=', 'done')]"/>
                 <filter string="In Consultation" name="filter_in_consultation"
                         domain="[('state', '=', 'in_consultation')]"/>
                 <filter string="Canceled" name="filter_canceled" domain="[('state', '=', 'canceled')]"/>
                 <searchpanel>
-                    <field name="doctor_id" string="Doctor" enable_counters="1" context="{}"/>
+                    <field name="state" string="Status" enable_counters="1" context="{}"/>
                 </searchpanel>
             </search>
         </field>
@@ -158,7 +174,7 @@
     <record id="action_appointment" model="ir.actions.act_window">
         <field name="name">Appointment</field>
         <field name="res_model">hospital.appointment</field>
-        <field name="view_mode">tree,form,activity</field>
+        <field name="view_mode">calendar,tree,form,activity</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 Add a new Appointment
@@ -175,7 +191,7 @@
               sequence="10"
     />
 
-        <menuitem id="menu_appointments_appointments"
+    <menuitem id="menu_appointments_appointments"
               name="Appointments"
               action="action_appointment"
               parent="menu_appointments"

@@ -47,7 +47,7 @@
     </record>
 
     <menuitem id="menu_patient_tag"
-              name="Patient Tags"
+              name="Tags"
               action="action_patient_tag"
               parent="menu_configuration"
               sequence="5"

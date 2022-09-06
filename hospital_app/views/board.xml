@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="action_patient_board" model="ir.actions.act_window">
+        <field name="name">Patient Board</field>
+        <field name="res_model">hospital.patient</field>
+        <field name="view_mode">tree,form</field>
+<!--        <field name="view_id" ref="users_form_inherit"/>-->
+    </record>
+        <record model="ir.ui.view" id="appointment_calendar_board">
+        <field name="model">hospital.appointment</field>
+        <field name="priority" eval="2"/>
+        <field name="arch" type="xml">
+            <calendar string="Appointments" date_start="appointment_time" color="state" mode="month">
+                <field name="ref"/>
+                <field name="patient_id"/>
+                <field name="doctor_id"/>
+                <field name="state"/>
+            </calendar>
+        </field>
+    </record>
+
+    <record id="action_appointment_board" model="ir.actions.act_window">
+        <field name="name">Appointment Board</field>
+        <field name="res_model">hospital.appointment</field>
+        <field name="view_mode">calendar</field>
+        <field name="view_id" ref="appointment_calendar_board"/>
+        <field name="context">{}</field>
+<!--        <field name="domain" eval="[('appointment_time','&gt;=', datetime.today()), ('state', '!=', 'done')]"/>-->
+        <field name="domain" eval="[]"/>
+    </record>
+
+    <record id="board_hospital_form" model="ir.ui.view">
+        <field name="name">Hospital Dashboard</field>
+        <field name="model">board.board</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Dashboard">
+                <board style="2-1">
+                    <column>
+                        <action string="Appointments" name="%(action_appointment_board)d"/>
+                    </column>
+                    <column>
+                        <action string="Patients" name="%(action_patient_board)d"/>
+                    </column>
+                </board>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="action_hospital_board" model="ir.actions.act_window">
+        <field name="name">Hospital Board</field>
+        <field name="res_model">board.board</field>
+        <field name="view_mode">form</field>
+        <field name="usage">menu</field>
+        <field name="view_id" ref="board_hospital_form"/>
+    </record>
+
+
+    <menuitem id="menu_hospital_board"
+              name="Dashboard"
+              action="action_hospital_board"
+              parent="hospital_menu_root"
+              sequence="1"
+    />
+</odoo>

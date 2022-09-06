@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="users_form_inherit" model="ir.ui.view">
+        <field name="name">Users Form</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="arch" type="xml">
+<!--            <xpath expr="//field[@name='description']" position="after">-->
+<!--                <field name="is_doctor"/>-->
+<!--            </xpath>-->
+            <xpath expr="//page" position="before">
+                <page string="Appointments" name="doctor_appointments">
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" icon="fa-users">
+                            <field string="Appointments" name="appointment_count" widget="statinfo"/>
+                        </button>
+                        <label for="is_doctor" string="Doctor"/>
+                        <field name="is_doctor" string="Doctor" widget="boolean_toggle"/>
+                    </div>
+                    <field name="appointment_ids" readonly="1"
+                           context="{'default_patient_id': active_id, 'hide_patient_id': '1'}"
+                           domain="[('state', '==', 'canceled')]">
+                        <tree decoration-warning="state == 'in_consultation'" decoration-info="state  == 'draft'"
+                              decoration-danger="state == 'canceled'" decoration-success="state == 'done'"
+                              editable="bottom" delete="false">
+                            <field name="ref"/>
+                            <field name="patient_id" widget="many2one_avatar"/>
+                            <field name="appointment_time"/>
+                            <field name="booking_time"/>
+                            <field name="activity_ids" widget="list_activity"/>
+                            <field name="state" widget="badge"
+                                   decoration-warning="state == 'in_consultation'"
+                                   decoration-info="state  == 'draft'"
+                                   decoration-danger="state == 'canceled'"
+                                   decoration-success="state == 'done'"/>
+                            <button name="action_done" class="fa fa-check btn-success" string=" " type="object"
+                                    attrs="{'invisible': [('state', '!=', 'in_consultation')]}"/>
+                            <button name="%(hospital_app.action_cancel_appointment)d" string=" " states="draft"
+                                    type="action"
+                                    context="{'default_appointment_id': active_id, 'hide_appointment_id': '1'}"
+                                    class="fa fa-times btn-danger"
+                                    attrs="{'invisible': [('state', 'in', ('done', 'canceled', 'in_consultation', ' '))]}"/>
+                        </tree>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="action_users_form" model="ir.actions.act_window">
+        <field name="name">Action users Form</field>
+        <field name="res_model">res.users</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="users_form_inherit"/>
+        <field name="context">{"id": uid}</field>
+    </record>
+
+    <menuitem id="menu_users"
+              name="Users"
+              action="base.action_res_users"
+              parent="menu_configuration"
+              sequence="3"
+    />
+</odoo>

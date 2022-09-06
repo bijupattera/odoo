@@ -23,7 +23,7 @@ class HospitalAppointment(models.Model):
     appointment_time = fields.Datetime('Appointment Date', tracking=True, default=fields.Datetime.now())
     booking_time = fields.Datetime('Time of Booking', tracking=True, readonly=True, default=fields.Datetime.now())
     cancel_time = fields.Datetime('Time of Cancel', tracking=True, readonly=True)
-    gender = fields.Selection(related='patient_id.gender')
+    gender = fields.Selection(related='patient_id.gender', search='_search_gender')
     date_of_birth = fields.Date(related='patient_id.date_of_birth')
     age = fields.Integer('Age', compute='_compute_age', search='_search_age')
     prescription = fields.Html('Prescription')
@@ -49,6 +49,10 @@ class HospitalAppointment(models.Model):
         start_of_year = date_of_birth.replace(month=1, day=1)
         end_of_year = date_of_birth.replace(month=12, day=31)
         return [('date_of_birth', '>=', start_of_year), ('date_of_birth', '<=', end_of_year)]
+
+    def _search_gender(self, operator, value):
+        gender = self.env['hospital.patient'].search[('patient_id.id', '=' 'r.id').gender]
+        return [gender]
 
     def action_cancel(self):
         for rec in self:
@@ -81,6 +85,7 @@ class HospitalAppointment(models.Model):
         vals['state'] = 'draft'
         res = super(HospitalAppointment, self).create(vals)
         res.set_sl_numbers()
+        print(self.env.context)
         return res
 
     def write(self, vals):

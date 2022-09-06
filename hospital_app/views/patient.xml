@@ -6,6 +6,17 @@
         <field name="arch" type="xml">
             <form string="Patient" copy="0" delete="0">
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                            <button  class="oe_stat_button" icon="fa-users">
+                                <field string="Appointments" name="appointment_count" widget="statinfo"/>
+                            </button>
+<!--                            <button name="action_show_accesses" type="object" groups="base.group_no_one" class="oe_stat_button" icon="fa-list">-->
+<!--                                <field string="Access Rights" name="accesses_count" widget="statinfo"/>-->
+<!--                            </button>-->
+<!--                            <button name="action_show_rules" type="object" groups="base.group_no_one" class="oe_stat_button" icon="fa-list-ul">-->
+<!--                                <field string="Record Rules" name="rules_count" widget="statinfo"/>-->
+<!--                            </button>-->
+                    </div>
                     <field name="image" widget="image" class="oe_avatar"/>
                     <div class="oe_title">
                         <h4>
@@ -23,7 +34,7 @@
                             <field name="age"/>
                         </group>
                         <group>
-                            <field name="appointment_count"/>
+                            <field name="appointment_count" invisible="1"/>
                             <field name="notes"/>
                             <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                             <field name="active" invisible="1"/>
@@ -67,7 +78,12 @@
                                         class="fa fa-times btn-danger"
                                         attrs="{'invisible': [('state', 'in', ('done', 'canceled', 'in_consultation', ' '))]}"/>
                             </tree>
-
+                            <div>
+                                <button name="%(hospital_app.action_add_appointment)d" string=" Add Appointment"
+                                        type="action"
+                                        context="{'default_patient_id': active_id, 'hide_patient_id': '1'}"
+                                        class="fa fa-plus btn-info"/>
+                            </div>
                         </field>
                         </page>
                     </notebook>
